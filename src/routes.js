@@ -23,7 +23,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Account from 'views/pages/account';
-
+import Branch from 'views/pages/branch';
 var routes = [
   {
     path: "/index",
@@ -43,7 +43,7 @@ var routes = [
     path: "/branch",
     name: "สาขา",
     icon: "ni ni-shop text-blue",
-    component: Account,
+    component: Branch,
     layout: "/cms",
   },
   {
