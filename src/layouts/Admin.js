@@ -1,28 +1,12 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+
+import CreateAccount from 'views/pages/account/create'
 
 import routes from "routes.js";
 
@@ -40,7 +24,7 @@ const Admin = (props) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/cms") {
         return (
-          <Route
+          <Route exact 
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
@@ -82,10 +66,11 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
+          <Route path='/cms/account/create' component={CreateAccount}></Route>
           <Redirect from="*" to="/cms/index" />
         </Switch>
         <Container fluid>
-          <AdminFooter />
+          {/* <AdminFooter /> */}
         </Container>
       </div>
     </>

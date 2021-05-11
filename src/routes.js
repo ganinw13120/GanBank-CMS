@@ -22,6 +22,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import Account from 'views/pages/account';
 
 var routes = [
   {
@@ -29,6 +30,20 @@ var routes = [
     name: "Dashboard",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
+    layout: "/cms",
+  },
+  {
+    path: "/account",
+    name: "บัญชีธนาคาร",
+    icon: "ni ni-folder-17 text-blue",
+    component: Account,
+    layout: "/cms",
+  },
+  {
+    path: "/branch",
+    name: "สาขา",
+    icon: "ni ni-shop text-blue",
+    component: Account,
     layout: "/cms",
   },
   {
@@ -74,4 +89,5 @@ var routes = [
     layout: "/auth",
   },
 ];
+
 export default routes;
