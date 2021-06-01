@@ -7,6 +7,12 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import CreateAccount from 'views/pages/account/create'
+import CreateBranch from 'views/pages/branch/create'
+import CreateEmployee from 'views/pages/employee/create'
+
+import Transfer from 'views/pages/transaction/transfer'
+import Deposit from 'views/pages/transaction/deposit'
+import CreateLoan from 'views/pages/loan/create'
 
 import routes from "routes.js";
 
@@ -67,7 +73,13 @@ const Admin = (props) => {
         <Switch>
           {getRoutes(routes)}
           <Route path='/cms/account/create' component={CreateAccount}></Route>
+          <Route path='/cms/branch/create' component={CreateBranch}></Route>
+          <Route path='/cms/employee/create' component={CreateEmployee}></Route>
+          <Route path='/cms/transaction/transfer' component={Transfer}></Route>
+          <Route path='/cms/transaction/deposit-withdraw' component={Deposit}></Route>
+          <Route path='/cms/loan/create' component={CreateLoan}></Route>
           <Redirect from="*" to="/cms/index" />
+          
         </Switch>
         <Container fluid>
           {/* <AdminFooter /> */}

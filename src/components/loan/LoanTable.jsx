@@ -12,20 +12,25 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อสาขา', minWidth: 100 },
-  { id: 'address', label: 'ที่อยู่', minWidth: 100 },
+  { id: 'name', label: 'ชื่อ', minWidth: 100 },
+  { id: 'type', label:'ประเภท', minWidth: 100 },
+  { id: 'price', label:'มูลค่า', minWidth: 100 },
+  { id: 'date', label:'วันที่ขอสินเชื่อ', minWidth: 100 },
+  { id: 'status', label:'สถานะ', minWidth: 100 },
   { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
   { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
 ];
 
-function createData(no, name, address) {
-  return { no, name, address };
+function createData(no, name, type, price, date, status) {
+  return { no, name, type, price, date, status };
 }
 
 const rows = [
-  createData('1', 'สาขามหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', '126 ถ.ประชาอุทิศ'),
-  createData('2', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
-  createData('3', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
+  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
+  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
+  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
+  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
+  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
 ];
 
 const styles = theme => ({
@@ -36,7 +41,7 @@ const styles = theme => ({
     maxHeight: 440,
   },
 });
-class BranchTable extends Component{
+class LoanTable extends Component{
   render () {
 
     const {classes} = this.props
@@ -44,8 +49,8 @@ class BranchTable extends Component{
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
           <Container className='pb-4'>
-            <Button color="primary" type="button" href='branch/create'>
-            เพิ่มสาขา
+            <Button color="primary" type="button" href='loan/create'>
+            ขอสินเชื่อ
             </Button>
           </Container>
           <Paper className={classes.root}>
@@ -94,4 +99,4 @@ class BranchTable extends Component{
     );
   }
 }
-export default withStyles(styles)(BranchTable);
+export default withStyles(styles)(LoanTable);

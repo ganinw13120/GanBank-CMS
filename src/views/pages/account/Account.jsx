@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import AccountHeader from "components/account/AccountHeader.jsx";
-import AccountTable from 'components/account/AccountTable.js';
+import AccountTable from 'components/account/AccountTable.jsx';
 
 class Account extends Component{
   render () {

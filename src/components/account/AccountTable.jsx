@@ -12,20 +12,21 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อสาขา', minWidth: 100 },
-  { id: 'address', label: 'ที่อยู่', minWidth: 100 },
+  { id: 'code', label: 'เลขที่บัญชี', minWidth: 100 },
+  { id: 'name', label: 'ชื่อบัญชี', minWidth: 100 },
+  { id: 'type', label: 'ประเภท', minWidth: 100 },
   { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
   { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
 ];
 
-function createData(no, name, address) {
-  return { no, name, address };
+function createData(no, code, name, type) {
+  return { no, code, name, type };
 }
 
 const rows = [
-  createData('1', 'สาขามหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', '126 ถ.ประชาอุทิศ'),
-  createData('2', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
-  createData('3', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
+  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'ออมทรัพย์'),
+  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'ฝากประจำ'),
+  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'รายวัน'),
 ];
 
 const styles = theme => ({
@@ -36,7 +37,7 @@ const styles = theme => ({
     maxHeight: 440,
   },
 });
-class BranchTable extends Component{
+class AccountTable extends Component{
   render () {
 
     const {classes} = this.props
@@ -44,8 +45,8 @@ class BranchTable extends Component{
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
           <Container className='pb-4'>
-            <Button color="primary" type="button" href='branch/create'>
-            เพิ่มสาขา
+            <Button color="primary" type="button" href='account/create'>
+              สร้างบัญชี
             </Button>
           </Container>
           <Paper className={classes.root}>
@@ -94,4 +95,4 @@ class BranchTable extends Component{
     );
   }
 }
-export default withStyles(styles)(BranchTable);
+export default withStyles(styles)(AccountTable);

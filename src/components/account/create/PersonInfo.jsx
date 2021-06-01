@@ -132,7 +132,7 @@ class PersonInfo extends Component {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         value='10'
-                        label="Age"
+                        label="------------"
                     >
                         <MenuItem value={10}>โสด</MenuItem>
                         <MenuItem value={20}>แต่งงาน</MenuItem>
@@ -147,7 +147,7 @@ class PersonInfo extends Component {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         value='10'
-                        label="Age"
+                        label="-------"
                     >
                         <MenuItem value={10}>โจร</MenuItem>
                         <MenuItem value={20}>นักเรียน</MenuItem>
@@ -162,7 +162,7 @@ class PersonInfo extends Component {
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         value='10'
-                        label="Age"
+                        label="---------------"
                     >
                         <MenuItem value={10}>มัธยมปลาย</MenuItem>
                         <MenuItem value={20}>ปริญญาตรี</MenuItem>

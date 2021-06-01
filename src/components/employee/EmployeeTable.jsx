@@ -12,20 +12,24 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อสาขา', minWidth: 100 },
-  { id: 'address', label: 'ที่อยู่', minWidth: 100 },
+  { id: 'name', label: 'ชื่อ', minWidth: 100 },
+  { id: 'position', label:'ตำเเหน่ง', minWidth: 100 },
+  { id: 'branch', label:'สาขา', minWidth: 100 },
+  { id: 'gender', label:'เพศ', minWidth: 100 },
   { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
   { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
 ];
 
-function createData(no, name, address) {
-  return { no, name, address };
+function createData(no, name, position, branch, gender) {
+  return { no, name, position, branch, gender };
 }
 
 const rows = [
-  createData('1', 'สาขามหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', '126 ถ.ประชาอุทิศ'),
-  createData('2', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
-  createData('3', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
+  createData('1', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
+  createData('2', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
+  createData('3', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
+  createData('4', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
+  createData('5', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
 ];
 
 const styles = theme => ({
@@ -36,7 +40,7 @@ const styles = theme => ({
     maxHeight: 440,
   },
 });
-class BranchTable extends Component{
+class EmployeeTable extends Component{
   render () {
 
     const {classes} = this.props
@@ -44,8 +48,8 @@ class BranchTable extends Component{
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
           <Container className='pb-4'>
-            <Button color="primary" type="button" href='branch/create'>
-            เพิ่มสาขา
+            <Button color="primary" type="button" href='employee/create'>
+            เพิ่มพนักงาน
             </Button>
           </Container>
           <Paper className={classes.root}>
@@ -94,4 +98,4 @@ class BranchTable extends Component{
     );
   }
 }
-export default withStyles(styles)(BranchTable);
+export default withStyles(styles)(EmployeeTable);

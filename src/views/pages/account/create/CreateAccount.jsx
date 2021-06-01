@@ -129,7 +129,7 @@ class CreateAccount extends Component{
             </Row>
         </Container>
         {person_infomation.map((val,inex)=>{
-          return (<PersonInfo/>)
+          return (val)
         })}
         <Container onClick={addPerson}>
           <Row className='pt-2 ml-5'>

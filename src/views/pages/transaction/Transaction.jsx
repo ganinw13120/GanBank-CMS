@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import BranchHeader from "components/branch/BranchHeader.jsx";
-import BranchTable from 'components/branch/BranchTable.jsx';
+import TransactionHeader from "components/transaction/TransactionHeader.jsx";
+import TransactionTable from 'components/transaction/TransactionTable.jsx';
 
-class Branch extends Component{
+class Transaction extends Component{
   render () {
     return (
       <>
-        <BranchHeader />
+        <TransactionHeader />
         {/* Page content */}
         {/* <Container className="mt--7" fluid> */}
-        <BranchTable />
+          <TransactionTable />
         {/* </Container> */}
       </>
     )
   }
 }
-export default Branch
+export default Transaction

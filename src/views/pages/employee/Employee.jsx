@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
-import BranchHeader from "components/branch/BranchHeader.jsx";
-import BranchTable from 'components/branch/BranchTable.jsx';
+import EmployeeHeader from "components/employee/EmployeeHeader.jsx";
+import EmployeeTable from 'components/employee/EmployeeTable.jsx';
 
-class Branch extends Component{
+class Employee extends Component{
   render () {
     return (
       <>
-        <BranchHeader />
+        <EmployeeHeader />
         {/* Page content */}
         {/* <Container className="mt--7" fluid> */}
-        <BranchTable />
+          <EmployeeTable />
         {/* </Container> */}
       </>
     )
   }
 }
-export default Branch
+export default Employee
