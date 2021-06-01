@@ -11,6 +11,8 @@ import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
 import { OutlinedInput } from '@material-ui/core';
+import Swal from 'sweetalert2'
+
 
 import PersonInfo from '../../../../components/account/create/PersonInfo.jsx'
 
@@ -52,22 +54,50 @@ class CreateBranch extends Component{
   constructor (props) {
     super(props)
     this.state = {
-      person_amount : 1
+        district_id : null,
+        name : null,
+        address : null,
     }
   }
-  onChangeProvince = (e) => {
-      console.log(e.target.value)
+  onDistrictFill = (id) => {
+      this.setState({
+          district_id : id
+      })
+  }
+  onNameChange = (val) => {
+    this.setState({
+        name : val.target.value
+    })
+  }
+  onAddressChange = (val) => {
+    this.setState({
+        address : val.target.value
+    })
+  }
+  formsubmit = (val) => {
+    Swal.fire({
+        title: "ยืนยันการสร้างสาขา",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            Swal.showLoading()
+        } else {
+            Swal.fire("Your imaginary file is safe!");
+        }
+      });
   }
   render () {
-    const onChange = (e) => {
-      console.log(e)
-    }
     const {classes} = this.props
+    const {district_id, name, address} = this.state
+    const submitable = district_id && name && address && district_id != null && name != null && address != null && district_id != '' && name != '' && address != ''
     return (
       <>
         <Header/>
-        <Address classes={classes} onChangeProvince={this.onChangeProvince}/>
-        <Footer />
+        <Address classes={classes} onDistrictFill={this.onDistrictFill} onNameChange={this.onNameChange} onAddressChange={this.onAddressChange} />
+        <Footer submitable={submitable} formsubmit={this.formsubmit} />
       </>
     )
   }
@@ -111,7 +141,7 @@ class Address extends Component {
             province_list : [],
             amphur_list : [],
             district_list : [],
-            
+            postcode : ''
         }
     }
     onChangeProvince = (e) => {
@@ -123,24 +153,46 @@ class Address extends Component {
               province_id : ''+e.target.value
         }
         axios.post('/cms/address/amphur', data).then(res=>{
+            console.log(res.data.Amphur)
             this.setState({
-                amphur_list : res.data.Amphur
+                amphur_list : res.data.Amphur,
+                district_list : [],
+                postcode : ''
             })
-          })
+        })
     }
     onChangeAmphur = (e) => {
         this.setState({
             amphur : e.target.value
         })
-    }
-    onChangeDistrict = (e) => {
-        this.setState({
-            district : e.target.value
+
+        const data =  {
+              amphur_id : ''+e.target.value
+        }
+        axios.post('/cms/address/district', data).then(res=>{
+            console.log(res.data.District)
+            this.setState({
+                district_list : res.data.District,
+                postcode : []
+            })
         })
     }
+    onChangeDistrict = (e) => {
+        const {onDistrictFill} = this.props
+        const {district_list} = this.state
+        let postCode = ''
+        district_list.forEach(item=>{
+            if(item.district_id==e.target.value) postCode=item.district_postcode
+        })
+        this.setState({
+            district : e.target.value,
+            postcode : postCode
+        })
+        onDistrictFill(e.target.value)
+    }
     render () {
-        const {province, amphur, district,province_list,amphur_list} = this.state
-        const {classes, onChangeProvince} = this.props
+        const {province, amphur, district,province_list,amphur_list, district_list,postcode} = this.state
+        const {classes, onDistrictFill, onNameChange, onAddressChange} = this.props
         let province_render = []
         if(province_list.length!=0)province_list.forEach(e=>{
             province_render.push(<MenuItem value={e.province_id}>{e.province_name}</MenuItem>)
@@ -148,6 +200,10 @@ class Address extends Component {
         let amphur_render = []
         if(amphur_list.length!=0)amphur_list.forEach(e=>{
             amphur_render.push(<MenuItem value={e.amphur_id}>{e.amphur_name}</MenuItem>)
+        })
+        let district_render = []
+        if(district_list.length!=0)district_list.forEach(e=>{
+            district_render.push(<MenuItem value={e.district_id}>{e.district_name}</MenuItem>)
         })
         return (
             <>
@@ -157,8 +213,8 @@ class Address extends Component {
                             classes={{root: classes.inputname}}
                             id="outlined-required"
                             label="ชื่อสาขา"
-                            defaultValue="สาขาเซนทรัลพระราม 2"
                             variant="outlined"
+                            onChange={onNameChange}
                             />
                     </Row>
                     <Row className="d-flex align-items-center mt-3"  style={{marginLeft:'11%'}} fluid>
@@ -166,8 +222,8 @@ class Address extends Component {
                                 classes={{root: classes.inputname}}
                                 id="outlined-required"
                                 label="ที่อยู่"
-                                defaultValue="สาขาเซนทรัลพระราม 2 ชั้น 10"
                                 variant="outlined"
+                                onChange={onAddressChange}
                                 />
                     </Row>
                     <Row className="d-flex align-items-center mt-3"  style={{marginLeft:'10%'}} fluid>
@@ -194,7 +250,7 @@ class Address extends Component {
                                 value={amphur}
                                 label="เขต / อำเภอ"
                                 onChange={this.onChangeAmphur}
-                                disabled={true}
+                                disabled={amphur_list.lenght==0}
                             >
                                 {amphur_render}
                             </Select>
@@ -209,21 +265,21 @@ class Address extends Component {
                                 value={district}
                                 label="เเขวง / ตำบล"
                                 onChange={this.onChangeDistrict}
+                                disabled={district_list.lenght==0}
                             >
-                                <MenuItem value={10}>บางมด</MenuItem>
-                                <MenuItem value={20}>ผักไห่</MenuItem>
-                                <MenuItem value={30}>ลาดน้ำเค็ม</MenuItem>
+                                {district_render}
                             </Select>
                             </FormControl>
                         </Col>
                         <Col md='2' className='mt-4'>
-                            <FormControl variant="outlined" className={classes.accno}>
+                            <FormControl variant="outlined" className={classes.formControl}>
                                 <InputLabel  variant="outlined"  htmlFor="formatted-text-mask-input">รหัสไปรษณีย์</InputLabel>
                                 <OutlinedInput
                                 label="รหัสไปรษณีย์"
                                 name="textmask"
                                 id="formatted-text-mask-input"
                                 variant="outlined"
+                                value={postcode}
                                 disabled
                                 />
                             </FormControl>
@@ -236,13 +292,14 @@ class Address extends Component {
 
 class Footer extends Component {
     render () {
+        const {submitable, formsubmit} = this.props
         return (
             <Row className="d-flex align-items-center mt-5 justify-content-md-flex-end"  style={{marginLeft:'10%', paddingBottom:100}} fluid>
 
                 <Button color="secondary" type="button">
                 ยกเลิก
                 </Button>
-                <Button color="primary" type="button">
+                <Button color="primary" type="button" disabled={!submitable} onClick={formsubmit}>
                 เพิ่มสาขา
                 </Button>
           </Row>

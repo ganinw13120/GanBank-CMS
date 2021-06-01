@@ -65,7 +65,9 @@
     "react-scripts": "4.0.1",
     "react-text-mask": "^5.4.3",
     "reactstrap": "8.9.0",
-    "semantic-ui-react": "^2.0.3"
+    "semantic-ui-react": "^2.0.3",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.0.16"
   },
   "devDependencies": {
     "gulp": "4.0.2",
