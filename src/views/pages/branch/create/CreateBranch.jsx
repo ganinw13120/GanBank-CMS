@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form , Container, Row, Col, Button} from "reactstrap";
+import {  Container, Row, Col, Button} from "reactstrap";
 import axios from 'axios';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -7,7 +7,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
 import { OutlinedInput } from '@material-ui/core';
@@ -76,18 +75,31 @@ class CreateBranch extends Component{
   }
   formsubmit = (val) => {
     Swal.fire({
-        title: "ยืนยันการสร้างสาขา",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-            Swal.showLoading()
-        } else {
-            Swal.fire("Your imaginary file is safe!");
+        title: 'ยืนยันการสร้างสาขา',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirm'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire('กำลังเพิ่มสาขา...')
+            const {name, address, district_id} = this.state
+            const data =  {
+                branch_name : name,
+                branch_address : address, 
+                district_id : ""+district_id
+            }
+            axios.post('/cms/branch/create', data).then(res=>{
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    icon: 'success',
+                    confirmButtonText:
+                      '<a href="/cms/branch" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+                  })
+            })
         }
-      });
+      })
   }
   render () {
     const {classes} = this.props

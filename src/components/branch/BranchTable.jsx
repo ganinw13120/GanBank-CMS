@@ -22,11 +22,7 @@ function createData(no, name, address) {
   return { no, name, address };
 }
 
-const rows = [
-  createData('1', 'สาขามหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี', '126 ถ.ประชาอุทิศ'),
-  createData('2', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
-  createData('3', 'สาขาเซ็นทัลพระราม 2', '126 ถ.ประชาอุทิศ'),
-];
+const rows = [];
 
 const styles = theme => ({
   root: {
@@ -37,9 +33,12 @@ const styles = theme => ({
   },
 });
 class BranchTable extends Component{
-  render () {
-
-    const {classes} = this.props
+  render () { 
+    const {classes, branch_list} = this.props
+    if(branch_list) branch_list.forEach((e, index)=>{
+      rows.push(createData(index+1, e.branch_name, `${e.branch_address} ${e.district_name} ${e.amphur_name} ${e.province_name}`))
+    })
+    console.log(branch_list)
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 

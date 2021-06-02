@@ -3,6 +3,7 @@ import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class BranchHeader extends Component{
   render () {
+    const {totalnum} = this.props
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{zIndex:-1}}>
@@ -22,7 +23,7 @@ class BranchHeader extends Component{
                             จำนวนสาขา
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            {totalnum}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -33,7 +34,7 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-arrow-up" /> 3 สาขา
                         </span>{" "}
                         <span className="text-nowrap">จากเดือนที่เเล้ว</span>
                       </p>

@@ -53,13 +53,6 @@ var routes = [
     component: Loan,
     layout: "/cms",
   },
-  {
-    path: "/promotion",
-    name: "โปรโมชั่น",
-    icon: "ni ni-archive-2 text-warning",
-    component: Loan,
-    layout: "/cms",
-  },
   // {
   //   path: "/icons",
   //   name: "Icons",
