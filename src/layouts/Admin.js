@@ -15,6 +15,7 @@ import Deposit from 'views/pages/transaction/deposit'
 import CreateLoan from 'views/pages/loan/create'
 
 import routes from "routes.js";
+import CreatePromotion from "views/pages/promotion/create/CreatePromotion";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -78,6 +79,7 @@ const Admin = (props) => {
           <Route path='/cms/transaction/transfer' component={Transfer}></Route>
           <Route path='/cms/transaction/deposit-withdraw' component={Deposit}></Route>
           <Route path='/cms/loan/create' component={CreateLoan}></Route>
+          <Route path='/cms/promotion/create' component={CreatePromotion}></Route>
           <Redirect from="*" to="/cms/index" />
           
         </Switch>
