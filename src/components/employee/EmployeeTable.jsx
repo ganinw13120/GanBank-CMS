@@ -24,7 +24,7 @@ function createData(no, name, position, branch, gender) {
   return { no, name, position, branch, gender };
 }
 
-const rows = [];
+let rows = [];
 
 const styles = theme => ({
   root: {
@@ -38,6 +38,7 @@ class EmployeeTable extends Component{
   render () {
 
     const {classes, staff_list} = this.props
+    rows = []
     if(staff_list) staff_list.forEach((e, index)=>{
       rows.push(createData(index+1, `${e.staff_firstname} ${e.staff_middlename!='NULL' ? e.staff_middlename : ''} ${e.staff_lastname}`, e.position_name, e.branch_name, e.staff_gender=='male' ? 'ชาย' : 'หญิง'))
     })

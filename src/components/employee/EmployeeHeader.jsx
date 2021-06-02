@@ -3,6 +3,7 @@ import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class EmployeeHeader extends Component{
   render () {
+    const {most_position_name,most_position_num,totalnum,monthcount,oldest_age,youngest_age,most_branch_num,most_branch_name} = this.props
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{zIndex:-1}}>
@@ -19,10 +20,10 @@ class EmployeeHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            จำนวนพนักงาน
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            {totalnum} 
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -33,9 +34,9 @@ class EmployeeHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          {monthcount}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">พนักงานใหม่ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -49,10 +50,10 @@ class EmployeeHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            อายุพนักงานที่มากที่สุด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            {oldest_age} ปี
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -63,9 +64,9 @@ class EmployeeHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          {youngest_age} ปี 
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">อายุพนักงานที่น้อยที่สุด</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -79,10 +80,10 @@ class EmployeeHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            สาขาที่มีพนักงานมากที่สุด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            {most_branch_name}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -93,9 +94,9 @@ class EmployeeHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {most_branch_num}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">คน</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -109,10 +110,10 @@ class EmployeeHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            ตำเเหน่งที่มีพนักงานมากที่สุด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            {most_position_name}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -123,9 +124,9 @@ class EmployeeHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {most_position_num}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">คน</span>
                       </p>
                     </CardBody>
                   </Card>

@@ -22,7 +22,7 @@ function createData(no, name, address) {
   return { no, name, address };
 }
 
-const rows = [];
+let rows = [];
 
 const styles = theme => ({
   root: {
@@ -35,6 +35,7 @@ const styles = theme => ({
 class BranchTable extends Component{
   render () { 
     const {classes, branch_list} = this.props
+    rows = [];
     if(branch_list) branch_list.forEach((e, index)=>{
       rows.push(createData(index+1, e.branch_name, `${e.branch_address} ${e.district_name} ${e.amphur_name} ${e.province_name}`))
     })
