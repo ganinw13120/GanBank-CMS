@@ -65,7 +65,7 @@ var routes = [
   {
     path: "/Customer",
     name: "Customer",
-    icon: "ni ni-shop text-red",
+    icon: "ni ni-single-02 text-blue",
     component: Customer,
     layout: "/cms",
   },
