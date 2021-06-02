@@ -47,14 +47,17 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.2",
     "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "antd": "^4.15.4",
     "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "4.6.0",
     "chart.js": "2.9.4",
     "classnames": "2.2.6",
     "moment": "2.29.1",
     "node-sass": "4.14.1",
-    "node-sass-package-importer": "5.3.2",
+    "node-sass-package-importer": "^5.2.0",
     "nouislider": "14.6.3",
     "react": "17.0.1",
     "react-chartjs-2": "2.11.1",
@@ -62,7 +65,7 @@
     "react-datetime": "3.0.4",
     "react-dom": "17.0.1",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^4.0.3",
     "react-text-mask": "^5.4.3",
     "reactstrap": "8.9.0",
     "semantic-ui-react": "^2.0.3",
@@ -70,7 +73,7 @@
     "sweetalert2": "^11.0.16"
   },
   "devDependencies": {
-    "gulp": "4.0.2",
+    "gulp": "^4.0.2",
     "gulp-append-prepend": "1.0.8"
   },
   "optionalDependencies": {

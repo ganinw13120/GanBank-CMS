@@ -24,13 +24,7 @@ function createData(no, name, position, branch, gender) {
   return { no, name, position, branch, gender };
 }
 
-const rows = [
-  createData('1', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('2', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('3', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('4', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('5', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-];
+const rows = [];
 
 const styles = theme => ({
   root: {
@@ -43,7 +37,10 @@ const styles = theme => ({
 class EmployeeTable extends Component{
   render () {
 
-    const {classes} = this.props
+    const {classes, staff_list} = this.props
+    if(staff_list) staff_list.forEach((e, index)=>{
+      rows.push(createData(index+1, `${e.staff_firstname} ${e.staff_middlename!='NULL' ? e.staff_middlename : ''} ${e.staff_lastname}`, e.position_name, e.branch_name, e.staff_gender=='male' ? 'ชาย' : 'หญิง'))
+    })
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 

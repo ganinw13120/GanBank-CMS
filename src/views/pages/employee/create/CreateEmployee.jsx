@@ -11,6 +11,15 @@ import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
 import { OutlinedInput } from '@material-ui/core';
 import axios from 'axios';
+import Swal from 'sweetalert2'
+import { controllers } from "chart.js";
+import clsx from 'clsx';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
+import bcrypt from 'bcryptjs'
+let info = {}
 
 const styles = theme => ({
   formControl: {
@@ -47,6 +56,22 @@ function IDCardMask(props) {
     );
   }
 
+  function PhoneMask(props) {
+      const { inputRef, ...other } = props;
+    
+      return (
+        <MaskedInput
+          {...other}
+          ref={(ref) => {
+            inputRef(ref ? ref.inputElement : null);
+          }}
+          mask={[ /[0-9]/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]}
+          placeholderChar={'\u2000'}
+          showMask
+        />
+      );
+    }
+
 class CreateEmployee extends Component{
   constructor (props) {
     super(props)
@@ -56,28 +81,36 @@ class CreateEmployee extends Component{
         education_level : [],
         branch_id : null,
         info_complete : false,
+        address : null,
+        address_name : null,
+        district_id : null,
+        position_id :null,
+        position_list : null,
     }
   }
   componentDidMount () {
     axios.post('/cms/staff/prepare').then(res=>{
-        console.log(res.data)
         this.setState({
             branch_list : res.data.branch,
             province_list : res.data.Province,
-            education_level : res.data.education_level
+            education_level : res.data.education_level,
+            position_list : res.data.Position
         })
     })
   }
   onChangeBranch = (e) => {
-    //   console.log(e)
     this.setState({
         branch_id : e,
-        info_complete : false,
+    })
+  }
+  onPositionChange = (e) => {
+    this.setState({
+        position_id : e,
     })
   }
   onChangeInfo = (e) => {
     this.setState({
-        info_complete : false,
+        info_complete : e,
     })
   }
   onChangeAddress = (e) => {
@@ -85,19 +118,58 @@ class CreateEmployee extends Component{
         district_id : e
     })
   }
+  onChangeState = (field, val) => {
+    this.setState({
+        [field] : val
+    })
+  }
+  formsubmit = () => {
+    Swal.fire({
+        title: 'ยืนยันการเพิ่มพนักงาน',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirm'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire('กำลังเพิ่มพนักงาน..')
+            const {branch_id, address, address_name, district_id, position_id} = this.state
+            let data = info
+            data.branch_id = branch_id
+            data.address = address
+            data.address_name = address_name
+            data.district_id = district_id
+            data.position_id = position_id
+            data.password = bcrypt.hashSync('bacon', 8);
+            data.idcard = data.idcard.replace(/-/g, '')
+            data.phone_number = data.phone_number.replace(/-/g, '')
+            console.log(data)
+            axios.post('/cms/staff/create', data).then(res=>{
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    icon: 'success',
+                    confirmButtonText:
+                      '<a href="/cms/employee" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+                  })
+            })
+        }
+      })
+  }
   render () {
     const {classes} = this.props
-    const {branch_list, province_list, education_level,branch_id,info_complete, district_id} = this.state
-    const submitable = branch_id != null && info_complete && district_id
+    const {branch_list, province_list, education_level,branch_id,info_complete, district_id, address, address_name, position_list} = this.state
+    const submitable = branch_id != null && info_complete && district_id && address && address_name
     return (
       <>
         <Header/>
 
         <Container className="" style={{marginLeft:'0%'}} fluid>
-        <Branch classes={classes} branch_lsit={branch_list} onChangeBranch={this.onChangeBranch} />
+        <Branch classes={classes} branch_list={branch_list} onChangeBranch={this.onChangeBranch} />
+        <Position classes={classes} position_list={position_list} onChangePosition={this.onPositionChange} />
         <StaffInfo classes={classes} education_level={education_level} onChangeInfo={this.onChangeInfo}/>
-        <Address classes={classes} province_list={province_list} onChangeAddress={this.onChangeAddress}/>
-        <Footer submitable={submitable} />
+        <Address classes={classes} province_list={province_list} onChangeAddress={this.onChangeAddress} onChangeState={this.onChangeState}/>
+        <Footer submitable={submitable} formsubmit={this.formsubmit}/>
         </Container>
       </>
     )
@@ -128,7 +200,7 @@ class Branch extends Component {
             branch_id : null
         }
     }
-    onChangeBranch = (e) => {
+    onChangeBranchInComponent = (e) => {
         const {onChangeBranch} = this.props
         this.setState({
             branch_id : e.target.value
@@ -136,8 +208,12 @@ class Branch extends Component {
         onChangeBranch(e.target.value)
     }
     render () {
-        const {classes} = this.props
+        const {classes, branch_list} = this.props
         const {branch_id} = this.state
+        let branch_render = []
+        if(branch_list) branch_list.forEach(e=>{
+            branch_render.push(<MenuItem value={e.branch_id}>{e.branch_name}</MenuItem>)
+        })
         return (
             <>
                 <Container className="pt-5" style={{marginLeft:'0%'}} fluid>
@@ -155,11 +231,60 @@ class Branch extends Component {
                                 id="demo-simple-select-outlined"
                                 value={branch_id}
                                 label="Age"
-                                onChange={this.onChangeBranch}
+                                onChange={this.onChangeBranchInComponent}
                                 >
-                                <MenuItem value={10}>สาขามหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี</MenuItem>
-                                <MenuItem value={20}>สาขาเซ็นทรัลพระราม 2</MenuItem>
-                                <MenuItem value={30}>สาขาเซ็นทรัลพระราม 3</MenuItem>
+                                    {branch_render}
+                                </Select>
+                            </FormControl>
+                        </Col>
+                    </Row>
+                </Container>
+            </>
+        )
+    }
+}
+
+class Position extends Component {
+    constructor (props) {
+        super(props)
+        this.state = {
+            position_id : null
+        }
+    }
+    onChangePositionInComponent = (e) => {
+        const {onChangePosition} = this.props
+        this.setState({
+            position_id : e.target.value
+        })
+        onChangePosition(e.target.value)
+    }
+    render () {
+        const {classes, position_list} = this.props
+        const {position_id} = this.state
+        let position_render = []
+        if(position_list) position_list.forEach(e=>{
+            position_render.push(<MenuItem value={e.position_id}>{e.position_name}</MenuItem>)
+        })
+        return (
+            <>
+                <Container className="pt-5" style={{marginLeft:'0%'}} fluid>
+                    <Row>
+                        <Col className='pr-0'>
+                        <Container>
+                            <h1 className="display-6 pt-3" style={{minWidth:150}}>ตำเเหน่ง</h1>
+                        </Container>
+                        </Col>
+                        <Col md='8'>
+                            <FormControl variant="outlined" className={classes.formControl}>
+                                <InputLabel id="demo-simple-select-outlined-label">เลือกตำเเหน่ง</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={position_id}
+                                label="Age"
+                                onChange={this.onChangePositionInComponent}
+                                >
+                                    {position_render}
                                 </Select>
                             </FormControl>
                         </Col>
@@ -183,20 +308,35 @@ class StaffInfo extends Component {
             education : null,
             birthday : null,
             idcard : null,
+            email : null,
+            phone_number : null,
+            showpassword : false,
+            password : null,
         }
 
     }
     onChangeData = (field,val) => {
+        const temp = Object.assign({},this.state)
+        temp[field] = val
         this.setState({
             [field] : val
         })
+        info = temp
+        temp.showpassword = 'test'
         const {onChangeInfo} = this.props
-        onChangeInfo(!Object.values(this.state).some(v=>v==null))
+        onChangeInfo(!Object.values({temp}).some(v=>v==null||v==''))
+    
     }
     
+    handleClickShowPassword = (e) => {
+        const {showpassword} = this.state
+        this.setState({
+            showpassword : !showpassword
+        })
+    }
     render () {
         const {classes,education_level,idcard} = this.props
-        const {gender, prefix,status, education} = this.state
+        const {gender, prefix,status, education, showpassword, password} = this.state
         let education_render = []
         if(education_level) education_level.forEach(e=>{
             education_render.push(<MenuItem value={e.education_level_id}>{e.education_level_name}</MenuItem>)
@@ -280,7 +420,6 @@ class StaffInfo extends Component {
                         classes={{root: classes.inputname}}
                         id="outlined-required"
                         label="ชื่อ"
-                        defaultValue="แกน"
                         variant="outlined"
                         onChange={(e)=>{
                             this.onChangeData('firstname', e.target.value)
@@ -292,7 +431,6 @@ class StaffInfo extends Component {
                         classes={{root: classes.inputname}}
                         id="outlined-required"
                         label="ชื่อกลาง"
-                        defaultValue="ดี"
                         variant="outlined"
                         onChange={(e)=>{
                             this.onChangeData('middlename', e.target.value)
@@ -304,7 +442,6 @@ class StaffInfo extends Component {
                         classes={{root: classes.inputname}}
                         id="outlined-required"
                         label="นามสกุล"
-                        defaultValue="มงคลากร"
                         variant="outlined"
                         onChange={(e)=>{
                             this.onChangeData('lastname', e.target.value)
@@ -383,6 +520,62 @@ class StaffInfo extends Component {
                     </FormControl>
                 </Col>
                 </Row>
+                <Row className="d-flex align-items-center pt-3"  style={{marginLeft:'10%'}}  fluid>
+                    <Col md='4' className='mt-4'>
+                        
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel  variant="outlined"  htmlFor="formatted-text-mask-input">เบอร์โทร</InputLabel>
+                            <OutlinedInput
+                            label='เบอร์โทร'
+                            name="textmask"
+                            id="formatted-text-mask-input"
+                            inputComponent={PhoneMask}
+                            variant="outlined"
+                            onChange={(e)=>{
+                                this.onChangeData('phone_number', e.target.value)
+                            }}
+                            />
+                        </FormControl>
+                    </Col>
+                    <Col md='4' className='mt-4'>
+                        
+                        <TextField
+                            classes={{root: classes.inputname}}
+                            id="outlined-required"
+                            label="อีเมล"
+                            variant="outlined"
+                            onChange={(e)=>{
+                                this.onChangeData('email', e.target.value)
+                            }}
+                        />
+                    </Col>
+                    <Col md='4' className='mt-4'>
+
+                        <FormControl className={clsx(classes.formControl)} variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            type={showpassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={(e)=>{
+                                this.onChangeData('password', e.target.value)
+                            }}
+                            endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={this.handleClickShowPassword}
+                                edge="end"
+                                >
+                                {showpassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                            labelWidth={70}
+                        />
+                        </FormControl>
+                    </Col>
+                </Row>
             </>
         )
     }
@@ -412,7 +605,6 @@ class Address extends Component {
               province_id : ''+e.target.value
         }
         axios.post('/cms/address/amphur', data).then(res=>{
-            console.log(res.data.Amphur)
             this.setState({
                 amphur_list : res.data.Amphur,
                 district_list : [],
@@ -429,7 +621,6 @@ class Address extends Component {
               amphur_id : ''+e.target.value
         }
         axios.post('/cms/address/district', data).then(res=>{
-            console.log(res.data.District)
             this.setState({
                 district_list : res.data.District,
                 postcode : []
@@ -450,13 +641,12 @@ class Address extends Component {
         onChangeAddress(e.target.value)
     }
     onChangeData = (field,val) => {
-        this.setState({
-            [field] : val
-        })
+        const {onChangeState} = this.props
+        onChangeState(field, val)
     }
     render () {
-        const {province, amphur, district,amphur_list, district_list,postcode, address_name, address} = this.state
-        const {classes, onDistrictFill, onNameChange, onAddressChange,province_list} = this.props
+        const {province, amphur, district,amphur_list, district_list,postcode} = this.state
+        const {classes,province_list, onChangeState} = this.props
         let province_render = []
         if(province_list.length!=0)province_list.forEach(e=>{
             province_render.push(<MenuItem value={e.province_id}>{e.province_name}</MenuItem>)
@@ -481,7 +671,7 @@ class Address extends Component {
                             label="ชื่อสถานที่ติดต่อ"
                             variant="outlined"
                             onChange={(e)=>{
-                                this.onChangeData('address_name', e.target.value)
+                                onChangeState('address_name', e.target.value)
                             }}
                             />
                         </Col>
@@ -492,7 +682,7 @@ class Address extends Component {
                             label="ที่อยู่ติดต่อ"
                             variant="outlined"
                             onChange={(e)=>{
-                                this.onChangeData('address', e.target.value)
+                                onChangeState('address', e.target.value)
                             }}
                             />
                         </Col>
@@ -561,13 +751,14 @@ class Address extends Component {
 }
 class Footer extends Component {
     render () {
+        const {submitable, formsubmit} = this.props
         return (
             <Row className="d-flex align-items-center mt-5 justify-content-md-flex-end"  style={{marginLeft:'10%', paddingBottom:100}} fluid>
 
                 <Button color="secondary" type="button">
                     ยกเลิก
                 </Button>
-                <Button color="primary" type="button">
+                <Button color="primary" type="button" disabled={!submitable} onClick={formsubmit}>
                     เพิ่มพนักงาน
                 </Button>
           </Row>
