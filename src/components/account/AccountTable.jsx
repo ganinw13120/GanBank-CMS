@@ -23,11 +23,7 @@ function createData(no, code, name, type) {
   return { no, code, name, type };
 }
 
-const rows = [
-  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'ออมทรัพย์'),
-  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'ฝากประจำ'),
-  createData('1', 'XX-666-XXX-X', 'นายแกน มงคลากร', 'รายวัน'),
-];
+let rows = [];
 
 const styles = theme => ({
   root: {
@@ -40,7 +36,11 @@ const styles = theme => ({
 class AccountTable extends Component{
   render () {
 
-    const {classes} = this.props
+    const {classes, account_list} = this.props
+    rows = [];
+    if(account_list) account_list.forEach((e, index)=>{
+      rows.push(createData(index+1, e.account_no, `${e.customer_firstname} ${e.customer_middlename} ${e.customer_firstname}`, e.account_type_name))
+    })
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
