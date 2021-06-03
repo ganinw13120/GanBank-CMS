@@ -10,6 +10,8 @@ import Branch from 'views/pages/branch';
 import Employee from 'views/pages/employee'
 import Transaction from 'views/pages/transaction'
 import Loan from 'views/pages/loan'
+import Promotion from 'views/pages/promotion'
+import Customer from 'views/pages/Customer'
 var routes = [
   {
     path: "/index",
@@ -51,6 +53,20 @@ var routes = [
     name: "เงินเชื่อ",
     icon: "ni ni-archive-2 text-warning",
     component: Loan,
+    layout: "/cms",
+  },
+  {
+    path: "/promotion",
+    name: "โปรโมชั่น",
+    icon: "ni ni-archive-2 text-warning",
+    component: Promotion,
+    layout: "/cms",
+  },
+  {
+    path: "/Customer",
+    name: "Customer",
+    icon: "ni ni-single-02 text-blue",
+    component: Customer,
     layout: "/cms",
   },
   // {

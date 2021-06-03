@@ -12,25 +12,25 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อ', minWidth: 100 },
+  { id: 'name', label: 'ชื่อโปรโมชั่น', minWidth: 100 },
   { id: 'type', label:'ประเภท', minWidth: 100 },
-  { id: 'price', label:'มูลค่า', minWidth: 100 },
-  { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' },
-  { id: 'status', label:'สถานะ', minWidth: 100 },
-  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', },
-  { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
+  { id: 'date', label:'ระยะเวลาการจัดโปรโมชั่น', minWidth: 100 },
+  { id: 'Detail', label:'รายละเอียด', minWidth: 100 },
+  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
+  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
 ];
 
-function createData(no, name, type, price, status) {
-  return { no, name, type, price, status };
+function createData(no, name, type, date, Detail) {
+  return { no, name, type, date, Detail };
 }
 
 const rows = [
-  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('1', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
+  createData('2', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
+  createData('3', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
+  createData('4', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
+  createData('5', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
+  createData('6', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
 ];
 
 const styles = theme => ({
@@ -41,7 +41,7 @@ const styles = theme => ({
     maxHeight: 440,
   },
 });
-class LoanTable extends Component{
+class PromotionTable extends Component{
   render () {
 
     const {classes} = this.props
@@ -49,8 +49,8 @@ class LoanTable extends Component{
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
           <Container className='pb-4'>
-            <Button color="primary" type="button" href='loan/create'>
-            ขอสินเชื่อ
+            <Button color="primary" type="button" href='promotion/create'>
+            โปรโมชั่น
             </Button>
           </Container>
           <Paper className={classes.root}>
@@ -99,4 +99,4 @@ class LoanTable extends Component{
     );
   }
 }
-export default withStyles(styles)(LoanTable);
+export default withStyles(styles)(PromotionTable);

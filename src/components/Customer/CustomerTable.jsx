@@ -12,25 +12,21 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อ', minWidth: 100 },
-  { id: 'type', label:'ประเภท', minWidth: 100 },
-  { id: 'price', label:'มูลค่า', minWidth: 100 },
-  { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' },
-  { id: 'status', label:'สถานะ', minWidth: 100 },
-  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', },
-  { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
+  { id: 'name', label: 'ชื่อลูกค้า', minWidth: 100 },
+  { id: 'phone', label:'เบอร์โทร', minWidth: 100 },
+  { id: 'Detail', label:'รายละเอียด', minWidth: 100 },
 ];
 
-function createData(no, name, type, price, status) {
-  return { no, name, type, price, status };
+function createData(no, name, phone, Detail) {
+  return { no, name, phone, Detail };
 }
 
 const rows = [
-  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('1', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีสองบัญชี'),
+  createData('2', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีบ้านมีรถ'),
+  createData('3', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีหลุย'),
+  createData('4', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีกุชชี่เบล'),
+  createData('5', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีคอนโด'),
 ];
 
 const styles = theme => ({
@@ -41,7 +37,7 @@ const styles = theme => ({
     maxHeight: 440,
   },
 });
-class LoanTable extends Component{
+class CustomerTable extends Component{
   render () {
 
     const {classes} = this.props
@@ -49,9 +45,6 @@ class LoanTable extends Component{
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
           <Container className='pb-4'>
-            <Button color="primary" type="button" href='loan/create'>
-            ขอสินเชื่อ
-            </Button>
           </Container>
           <Paper className={classes.root}>
           <TableContainer className={classes.container}>
@@ -99,4 +92,4 @@ class LoanTable extends Component{
     );
   }
 }
-export default withStyles(styles)(LoanTable);
+export default withStyles(styles)(CustomerTable);
