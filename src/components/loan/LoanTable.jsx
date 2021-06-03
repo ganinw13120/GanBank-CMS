@@ -15,22 +15,22 @@ const columns = [
   { id: 'name', label: 'ชื่อ', minWidth: 100 },
   { id: 'type', label:'ประเภท', minWidth: 100 },
   { id: 'price', label:'มูลค่า', minWidth: 100 },
-  { id: 'date', label:'วันที่ขอสินเชื่อ', minWidth: 100 },
+  { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' },
   { id: 'status', label:'สถานะ', minWidth: 100 },
-  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
-  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
+  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'primary', innerText:'อนุมัติ', },
+  { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
 ];
 
-function createData(no, name, type, price, date, status) {
-  return { no, name, type, price, date, status };
+function createData(no, name, type, price, status) {
+  return { no, name, type, price, status };
 }
 
 const rows = [
-  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
-  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
-  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
-  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
-  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', '21 มีนาคม 2021', 'รอการอนุมัต'),
+  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
+  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
 ];
 
 const styles = theme => ({
