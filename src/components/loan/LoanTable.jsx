@@ -17,7 +17,7 @@ const columns = [
   { id: 'price', label:'มูลค่า', minWidth: 100 },
   { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' },
   { id: 'status', label:'สถานะ', minWidth: 100 },
-  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'primary', innerText:'อนุมัติ', },
+  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', },
   { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
 ];
 
