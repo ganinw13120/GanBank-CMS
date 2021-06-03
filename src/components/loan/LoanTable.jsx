@@ -15,7 +15,7 @@ const columns = [
   { id: 'name', label: 'ชื่อ', minWidth: 100 },
   { id: 'type', label:'ประเภท', minWidth: 100 },
   { id: 'price', label:'มูลค่า', minWidth: 100 },
-  { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' },
+  { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' , link:' loan/info'},
   { id: 'status', label:'สถานะ', minWidth: 100 },
   { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', },
   { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
@@ -77,7 +77,7 @@ class LoanTable extends Component{
                           if(column.button) {
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  <Button color={column.color} outline size='sm' type="button" >{column.innerText}</Button>
+                                  <Button color={column.color} outline size='sm' type="button" href={column.link} >{column.innerText}</Button>
                               </TableCell>
                               );
                           }
