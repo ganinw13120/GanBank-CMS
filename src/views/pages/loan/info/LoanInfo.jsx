@@ -1,17 +1,10 @@
 import React, { Component } from "react";
-import { Form, Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 
 import { withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import Radio from '@material-ui/core/Radio';
-import TextField from '@material-ui/core/TextField';
-import MaskedInput from 'react-text-mask';
-import Input from '@material-ui/core/Input';
-import { OutlinedInput } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios';
+import Moment from 'react-moment';
+import Swal from 'sweetalert2' 
 
 const styles = theme => ({
   formControl: {
@@ -40,34 +33,101 @@ class LoanInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      person_amount: 1
+      id : null,
+      data : null,
+      guarantee : [],
+      guarantor : [],
+      guarantee_owner : [],
+      guarantor_owner : [],
+      property : [],
     }
   }
+  componentDidMount(){
+    const { match: { params } } = this.props;
+    axios.post('/cms/loan/find', {loan_id : params.id}).then(res=>{
+      console.log(res.data)
+      this.setState({
+        id : params.id,
+        data : res.data.data[0],
+        guarantee : res.data.guarantee,
+        guarantor : res.data.person,
+        guarantee_owner : res.data.guarantee_owner,
+        property : res.data.property,
+        property_owner : res.data.property_owner,
+      })
+    })
+  }
+  updateStatus = (val) => {
+    Swal.fire({
+      title: 'ยืนยันการเปลี่ยนสถานะสินเชื่อ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire('กำลังทำรายการเปลี่ยนสถานะสินเชื่อ..')
+          const data = {
+            id : this.state.id,
+            new_status : val
+          }
+          axios.post('/cms/loan/update', data).then(res=>{
+              Swal.fire({
+                  title: 'สำเร็จ!',
+                  icon: 'success',
+                  confirmButtonText:
+                    '<a href="/cms/loan" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+                })
+          })
+          .catch(function (error) {
+            Swal.fire({
+                title: 'ไม่สำเร็จ!',
+                icon: 'error',
+                html: error.response.data.message,
+                confirmButtonText:
+                  '<a href="/cms/loan" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+              })
+          })
+      }
+    })
+  }
   render() {
-    const onChange = (e) => {
-      console.log(e)
-    }
     const { classes } = this.props
     return (
       <>
-        <Header />
+        <Header id={this.state.id}
+          data={this.state.data}/>
         <Container className="" style={{ marginLeft: '0%' }} fluid>
-          <Detail classes={classes} />
-          <Footer />
+          {this.state.data ? <Detail classes={classes}  
+          data={this.state.data}
+          guarantee ={this.state.guarantee}
+          guarantor ={this.state.guarantor}
+          guarantee_owner ={this.state.guarantee_owner}
+          property_owner ={this.state.property_owner}
+          property ={this.state.property}
+          /> : '' }
+          <Footer updateStatus={this.updateStatus} />
         </Container>
       </>
     )
   }
 }
 class Header extends Component {
+  constructor (props) {
+    super(props)
+  }
   render() {
+    console.log(this.props) 
     return (
-      <div className="header bg-gradient-info pb-3 pt-5 pt-md-8" style={{ zIndex: -1 }}>
+      <div className="header bg-gradient-info pb-3 md-5 pt-7" style={{ zIndex: -1 }}>
 
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col>
-              <h1 className="display-2 text-white text-bold" >แบบฟอร์มขอสินเชื่อ</h1>
+              <h1 className="display-2 text-white text-bold" >รายละเอียดสินเชื่อ</h1>
+              <h2 className=" text-white" >สินเชื่อเลขที่ : {this.props.id}</h2>
+              <h2 className=" text-white" >สถานะปัจจุบัน : {this.props.data ? this.props.data.loan_status==='accepted' ? 'ได้รับการอนุมัติ' : this.props.data.loan_status==='pending' ? 'รอการอนุมัติ' : 'ไม่อนุมัติ' : ''}</h2>
             </Col>
           </Row>
         </Container>
@@ -80,10 +140,14 @@ class Footer extends Component {
     return (
       <Row className="d-flex align-items-center mt-5 justify-content-md-flex-end" style={{ marginLeft: '10%', paddingBottom: 100 }} fluid>
 
-        <Button color="secondary" type="button">
+        <Button color="secondary" type="button" onClick={(e)=>{
+          this.props.updateStatus('declined')
+        }}>
           ไม่อนุมัติ
               </Button>
-        <Button color="primary" type="button">
+        <Button color="primary" type="button" onClick={(e)=>{
+          this.props.updateStatus('accepted')
+        }}>
           อมุมัติ
               </Button>
       </Row>
@@ -111,126 +175,160 @@ class SubHeader extends Component {
 }
 class Detail extends Component {
   render() {
-    const { classes } = this.props
-    const onChange = (e) => {
-      console.log(e.target.value)
-    }
+    const { classes,data } = this.props
+    let guarantor_render = []
+    if(this.props.guarantor) {
+      guarantor_render.push(<SubHeader header='ผู้ค้ำประกัน' isborder={true} />)
+      this.props.guarantor.forEach(e=>{
+      guarantor_render.push(<>
+          <Container>
+            ชื่อ-สกุล : {e.guarantor_firstname} {e.guarantor_middlename} {e.guarantor_lastname}
+              </Container>
+          <Container>
+            เลขบัตรประจำตัวประชาชน : {e.guarantor_idcard_number}
+              </Container>
+          <Container>
+            ความสัมพันธ์กับผู้กู้ : {e.guarantor_relation_name}
+              </Container>
+          <Container>
+            อาชีพ  : {e.career_name}
+              </Container>
+          <Container>
+            รายได้โดยประมาณ : {e.guarantor_income.toLocaleString()} บาทต่อเดือน
+              </Container>
+          <Container>
+            ค่าใช้จ่ายส่วนตัวโดยประมาณ : {e.guarantor_outcome.toLocaleString()} บาทต่อเดือน
+              </Container>
+          <Container>
+            อีเมล : {e.guarantor_email}
+              </Container>
+          <Container>
+            เบอร์โทร : {e.guarantor_phone_number}
+              </Container>
+      
+      </>)
+    })
+  }
+  let property_render = []
+  if(this.props.property) {
+    property_render.push(<SubHeader header='หลักประกันอสังหาริมทรัพย์' isborder={true} />)
+    this.props.property.forEach(e=>{
+      let property_owners = [];
+      this.props.property_owner.forEach(item=>{
+        if(item.property_id==e.property_id) property_owners.push(<><Row><Col md='2'></Col><Col>{property_owners.length+1}. {item.property_owner_name}</Col></Row></>)
+      })
+      property_render.push(<>
+
+        <Container className="d-flex align-items-center" style={{ marginLeft: '0%'}} fluid>
+          <Row>
+            <Col className='pr-8'>
+              <Container>
+                <h3 className="display-6 pt-3 pb-4 " >หลักประกันที่ {property_render.length}</h3>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+          <Container>
+            รายละเอียดหลักประกัน : {e.property_name}
+              </Container>
+          <Container>
+            เนื้อที่ :  {e.property_area} ไร่
+              </Container>
+          <Container>
+            ชื่อ-สกุล เจ้าของกรมสิทธิ์ : {property_owners}
+              </Container>
+          <Container>
+            จังหวัด : {e.province_name}
+               </Container>
+          <Container>
+            เขต/อำเภอ : {e.amphur_name}
+               </Container>
+          <Container>
+            แขวง/ตำบล  : {e.district_name}
+                </Container>
+          <Container style={{marginBottom:20}}>
+            รหัสไปรษณีย์  : {e.district_postcode}
+              </Container>
+            
+    </>)
+  })
+}
+let guarantee_render = []
+if(this.props.guarantee) {
+  guarantee_render.push(<SubHeader header='หลักประกันอื่น ๆ' isborder={true} />)
+  this.props.guarantee.forEach(e=>{
+    let guarantee_owners = [];
+    this.props.guarantee_owner.forEach(item=>{
+      if(item.guarantee_id==e.guarantee_id) guarantee_owners.push(<><Row><Col md='2'></Col><Col>{guarantee_owners.length+1}. {item.guarantee_owner_name}</Col></Row></>)
+    })
+    guarantee_render.push(<>
+
+      <Container className="d-flex align-items-center" style={{ marginLeft: '0%'}} fluid>
+        <Row>
+          <Col className='pr-8'>
+            <Container>
+              <h3 className="display-6 pt-3 pb-4 " >หลักประกันที่ {guarantee_render.length}</h3>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
+        <Container>
+          รายละเอียดหลักประกัน : {e.guarantee_name}
+            </Container>
+        <Container>
+          เนื้อที่ :  {e.guarantee_price} ไร่
+            </Container>
+        <Container>
+          ชื่อ-สกุล เจ้าของกรมสิทธิ์ : {guarantee_owners}
+            </Container>
+        <Container>
+          จังหวัด : {e.province_name}
+             </Container>
+        <Container>
+          เขต/อำเภอ : {e.amphur_name}
+             </Container>
+        <Container>
+          แขวง/ตำบล  : {e.district_name}
+              </Container>
+        <Container style={{marginBottom:20}}>
+          รหัสไปรษณีย์  : {e.district_postcode}
+            </Container>
+          
+  </>)
+})
+}
     return (
       <>
         <SubHeader header='รายละเอียด' isborder={false} />
-        <Col >
+        <Col style={{wordSpacing:10, letterSpacing:.7}} >
           <Container>
-            ประเภทผู้ขอสินเชื่อ : คนเดียว
+            ประเภทสินเชื่อ : {data.loan_type_name}
+            </Container>
+          <Container>
+            ชื่อ-สกุล ผู้ขอสินเชื่อ : {data.loan_request_name}
               </Container>
           <Container>
-            ประเภทสินเชื่อ : เงินเชื่อเพื่อซื้อบ้าน
+            วงเงิน : {data.loan_amount} บาท
               </Container>
           <Container>
-            ชื่อ-สกุล ผู้ขอสินเชื่อ : แกน มงคลากร
-              </Container>
-          <Container>
-            วงเงิน : 500,000 บาท
-              </Container>
-          <Container>
-            วันเริ่มสัญญา : 24/05/2017
+            วันเริ่มสัญญา : 
+                  <Moment format="YYYY/MM/DD" style={{paddingLeft:10}}>
+                    {data.loan_start_date}
+                  </Moment>
               </Container>
 
           <Container>
-            วันสิ้นสุดสัญญา : 24/05/2017
+            วันสิ้นสุดสัญญา :
+                  <Moment format="YYYY/MM/DD" style={{paddingLeft:10}}>
+                    {data.loan_end_date}
+                  </Moment>
               </Container>
           <Container>
-            วัตถุประสงค์การขอสินเชื่อ : เงินไปซื้อบ้าน
+            วัตถุประสงค์การขอสินเชื่อ : {data.loan_purpose}
               </Container>
-          <Container>
-            เลขที่บัญชีธนาคารสำหรับกู้ : 0-000-0000-0000
-              </Container>
-          <Container>
-            ชื่อบัญชีธนาคารสำหรับกู้  : แกน มงคลากร
-              </Container>
-          <SubHeader header='ผู้ค้ำประกัน' isborder={false} />
-          <Container>
-            สถานะใช้หลักประกัน : ใช้
-              </Container>
-          <Container>
-            ชื่อ-สกุล : นาย เจษฎา โสพุดอ่อน
-              </Container>
-          <Container>
-            เลขบัตรประจำตัวประชาชน : 1-3501-01583-82-1
-              </Container>
-          <Container>
-            ความสัมพันธ์กับผู้กู้ : ผู้ปกครอง
-              </Container>
-          <Container>
-            อาชีพ  : ค้าขาย
-              </Container>
-          <Container>
-            รายได้โดยประมาณ : 15,000 บาทต่อเดือน
-              </Container>
-          <Container>
-            ค่าใช้จ่ายส่วนตัวโดยประมาณ : 200 บาทต่อเดือน
-              </Container>
-          <Container>
-            อีเมล : gan@gmail.com
-              </Container>
-          <Container>
-            เบอร์โทร :0888888888
-              </Container>
-          <SubHeader header='หลักประกันอสังหาริมทรัพย์' isborder={false} />
-          <Container>
-            สถานะใช้หลักประกัน : ใช้
-              </Container>
-          <Container>
-            รายละเอียดหลักประกัน : ที่ดิน 10 ไร่ ใจกลางเมือง ติด BTS
-              </Container>
-          <Container>
-            เนื้อที่ :  10 ไร่
-              </Container>
-          <Container>
-            ชื่อ-สกุล เจ้าของกรมสิทธิ์ : นาย เจษฎา โสพุดอ่อน
-              </Container>
-          <Container>
-            รายละเอียด : ที่ดิน 10 ไร่ ใจกลางเมือง ติด BTS
-               </Container>
-          <Container>
-            จังหวัด: กรุงเทพมหานคร
-               </Container>
-          <Container>
-            เขต/อำเภอ : ทุ่งครุ
-               </Container>
-          <Container>
-            แขวง/ตำบล  : บางมด
-                </Container>
-          <Container>
-            รหัสไปรษณีย์  : 10140
-              </Container>
-              <SubHeader header='หลักประกันอื่น' isborder={false} />
-          <Container>
-            สถานะใช้หลักประกัน : ใช้
-              </Container>
-          <Container>
-            รายละเอียดหลักประกัน : ที่ดิน 10 ไร่ ใจกลางเมือง ติด BTS
-              </Container>
-          <Container>
-            เนื้อที่ :  10 ไร่
-              </Container>
-          <Container>
-            ชื่อ-สกุล เจ้าของกรมสิทธิ์ : นาย เจษฎา โสพุดอ่อน
-              </Container>
-          <Container>
-            รายละเอียด : ที่ดิน 10 ไร่ ใจกลางเมือง ติด BTS
-               </Container>
-          <Container>
-            จังหวัด: กรุงเทพมหานคร
-               </Container>
-          <Container>
-            เขต/อำเภอ : ทุ่งครุ
-               </Container>
-          <Container>
-            แขวง/ตำบล  : บางมด
-                </Container>
-          <Container>
-            รหัสไปรษณีย์  : 10140
-              </Container>
+          {guarantor_render}
+          {property_render}
+          {guarantee_render}
         </Col>
       </>
     )

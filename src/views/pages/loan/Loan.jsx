@@ -17,6 +17,17 @@ class Loan extends Component{
       unapproved_total_amount : 0,
     }
   }
+  changeStatus = (id, val) => {
+    let cached = [...this.state.loan_list]
+    cached.forEach(e=>{
+      if(e.loan_id===id) {
+        e.loan_status = val
+      }
+    })
+    this.setState({
+      loan_list : cached
+    })
+  }
   componentDidMount () {
     axios.post('/cms/loan/info').then(res=>{
       console.log(res)
@@ -44,7 +55,7 @@ class Loan extends Component{
         />
         {/* Page content */}
         {/* <Container className="mt--7" fluid> */}
-          <LoanTable loan_list={loan_list}/>
+          <LoanTable loan_list={loan_list} changeStatus={this.changeStatus}/>
         {/* </Container> */}
       </>
     )

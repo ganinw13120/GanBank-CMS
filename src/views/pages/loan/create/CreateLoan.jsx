@@ -165,7 +165,7 @@ class CreateLoan extends Component{
                 icon: 'error',
                 html: error.response.data.message,
                 confirmButtonText:
-                  '<a href="/cms/transaction" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+                  '<a href="/cms/loan" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
               })
           })
       }

@@ -7,22 +7,23 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
+import Swal from 'sweetalert2' 
+import axios from 'axios';
 import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อผู้ขอสินเชื่อ', minWidth: 100 },
+  { id: 'requst_name', label: 'ชื่อผู้ขอสินเชื่อ', minWidth: 100 },
   { id: 'type', label:'ประเภท', minWidth: 100 },
   { id: 'price', label:'มูลค่า', minWidth: 100 },
   { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' , link:' loan/info'},
   { id: 'status', label:'สถานะ', minWidth: 100 },
-  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', },
-  { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ'},
+  { id: 'approve', label: 'อนุมัติ', minWidth: 5, button : true, color:'success', innerText:'อนุมัติ', val:'accepted' },
+  { id: 'disapproved', label: 'ไม่อนุมัติ', minWidth: 5 , button : true, color:'danger', innerText:'ไม่อนุมัติ', val:'declined'},
 ];
 
-function createData(no, name, type, price, status) {
-  return { no, name, type, price, status };
+function createData(no, requst_name, type, price, status) {
+  return { no, requst_name, type, price, status };
 }
 
 let rows = []
@@ -36,10 +37,44 @@ const styles = theme => ({
   },
 });
 class LoanTable extends Component{
+
+  updateStatus = (val, id) => {
+    Swal.fire({
+      title: 'ยืนยันการเปลี่ยนสถานะสินเชื่อ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire('กำลังทำรายการเปลี่ยนสถานะสินเชื่อ..')
+          const data = {
+            id : id+'',
+            new_status : val
+          }
+          axios.post('/cms/loan/update', data).then(res=>{
+              Swal.fire({
+                  title: 'สำเร็จ!',
+                  icon: 'success'
+                })
+                this.props.changeStatus(id, val)
+          })
+          .catch(function (error) {
+            Swal.fire({
+                title: 'ไม่สำเร็จ!',
+                icon: 'error',
+                html: error.response.data.message,
+              })
+          })
+      }
+    })
+  }
+
   render () {
     const {classes, loan_list} = this.props
     rows = [];
-    if(loan_list) loan_list.forEach((e, index)=>{
+    if(loan_list) loan_list.forEach((e)=>{
       rows.push(createData(e.loan_id, e.loan_request_name, e.loan_type_name, e.loan_amount, e.loan_status=='pending' ? 'รอการอนุมัติ' : e.loan_status=='accepted' ? 'ได้รับการอนุมัติ' : 'ไม่อนุมัติ'))
     })
     return (
@@ -74,7 +109,7 @@ class LoanTable extends Component{
                           if(column.button) {
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  <Button color={column.color} outline size='sm' type="button" href={column.link} >{column.innerText}</Button>
+                                  <Button color={column.color} outline size='sm' type="button" href={column.link ? column.link+'/'+row.no : ''} onClick={()=>{ if(column.val) this.updateStatus(column.val, row.no) }}>{column.innerText}</Button>
                               </TableCell>
                               );
                           }

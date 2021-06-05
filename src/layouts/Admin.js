@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, Route, Switch, Redirect } from "react-router-dom";
+import { useLocation, Route, Switch, Redirect , useParams} from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
@@ -57,6 +57,7 @@ const Admin = (props) => {
     return "Brand";
   };
 
+
   return (
     <>
       <Sidebar
@@ -81,7 +82,7 @@ const Admin = (props) => {
           <Route path='/cms/transaction/transfer' component={Transfer}></Route>
           <Route path='/cms/transaction/deposit-withdraw' component={Deposit}></Route>
           <Route path='/cms/loan/create' component={CreateLoan}></Route>
-          <Route path='/cms/loan/info' component={LoanInfo}></Route>
+          <Route path='/cms/loan/info/:id' component={LoanInfo}></Route>
           <Route path='/cms/promotion/create' component={CreatePromotion}></Route>
           <Redirect from="*" to="/cms/index" />
           
