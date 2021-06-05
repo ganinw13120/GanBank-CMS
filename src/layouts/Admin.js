@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, Route, Switch, Redirect , useParams} from "react-router-dom";
+import { useLocation, Route, Switch, Redirect , useHistory} from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
@@ -57,6 +57,11 @@ const Admin = (props) => {
     return "Brand";
   };
 
+  // console.log()
+  const history = useHistory();
+  if(!localStorage.getItem('token')) {
+    history.push('/auth/login')
+  }
 
   return (
     <>

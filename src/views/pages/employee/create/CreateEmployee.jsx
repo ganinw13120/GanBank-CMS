@@ -11,13 +11,13 @@ import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
 import { OutlinedInput } from '@material-ui/core';
 import axios from 'axios';
+import bcrypt from 'bcryptjs'
 import Swal from 'sweetalert2' 
 import clsx from 'clsx';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
-import bcrypt from 'bcryptjs'
 let info = {}
 
 const styles = theme => ({
@@ -140,7 +140,7 @@ class CreateEmployee extends Component{
             data.address_name = address_name
             data.district_id = district_id
             data.position_id = position_id
-            data.password = bcrypt.hashSync('bacon', 8);
+            data.password = bcrypt.hashSync(data.password, 8);
             data.idcard = data.idcard.replace(/-/g, '')
             data.phone_number = data.phone_number.replace(/-/g, '')
             console.log(data)

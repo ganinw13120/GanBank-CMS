@@ -2,7 +2,7 @@ import Index from "views/Index.js";
 // import Profile from "views/examples/Profile.js";
 // import Maps from "views/examples/Maps.js";
 // import Register from "views/examples/Register.js";
-// import Login from "views/examples/Login.js";
+import Login from "views/examples/Login.js";
 // import Tables from "views/examples/Tables.js";
 // import Icons from "views/examples/Icons.js";
 import Account from 'views/pages/account';
@@ -63,8 +63,8 @@ var routes = [
     layout: "/cms",
   },
   {
-    path: "/Customer",
-    name: "Customer",
+    path: "/customer",
+    name: "ลูกค้า",
     icon: "ni ni-circle-08 text-primary",
     component: Customer,
     layout: "/cms",
@@ -97,13 +97,14 @@ var routes = [
   //   component: Tables,
   //   layout: "/cms",
   // },
-  // {
-  //   path: "/login",
-  //   name: "Login",
-  //   icon: "ni ni-key-25 text-info",
-  //   component: Login,
-  //   layout: "/auth",
-  // },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "ni ni-key-25 text-info",
+    component: Login,
+    layout: "/auth",
+    hide : true
+  },
   // {
   //   path: "/register",
   //   name: "Register",

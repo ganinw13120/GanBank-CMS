@@ -1,27 +1,9 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
-
-// reactstrap components
+import React, { Component } from "react";
+import Checkbox from '@material-ui/core/Checkbox';
+import { useLocation, Route, Switch, Redirect, useHistory } from "react-router-dom";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -29,133 +11,111 @@ import {
   InputGroupAddon,
   InputGroupText,
   InputGroup,
-  Row,
   Col,
 } from "reactstrap";
+import bcrypt from 'bcryptjs'
+import axios from 'axios';
+import Swal from 'sweetalert2' 
 
-const Login = () => {
-  return (
-    <>
-      <Col lg="5" md="7">
-        <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
-            <div className="text-muted text-center mt-2 mb-3">
-              <small>Sign in with</small>
-            </div>
-            <div className="btn-wrapper text-center">
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/github.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Github</span>
-              </Button>
-              <Button
-                className="btn-neutral btn-icon"
-                color="default"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <span className="btn-inner--icon">
-                  <img
-                    alt="..."
-                    src={
-                      require("../../assets/img/icons/common/google.svg")
-                        .default
-                    }
-                  />
-                </span>
-                <span className="btn-inner--text">Google</span>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
-            <div className="text-center text-muted mb-4">
-              <small>Or sign in with credentials</small>
-            </div>
-            <Form role="form">
-              <FormGroup className="mb-3">
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-email-83" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Email"
-                    type="email"
-                    autoComplete="new-email"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup>
-                <InputGroup className="input-group-alternative">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <i className="ni ni-lock-circle-open" />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Password"
-                    type="password"
-                    autoComplete="new-password"
-                  />
-                </InputGroup>
-              </FormGroup>
-              <div className="custom-control custom-control-alternative custom-checkbox">
-                <input
-                  className="custom-control-input"
-                  id=" customCheckLogin"
-                  type="checkbox"
-                />
-                <label
-                  className="custom-control-label"
-                  htmlFor=" customCheckLogin"
-                >
-                  <span className="text-muted">Remember me</span>
-                </label>
+class Login extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      phone_number : null,
+      password : null,
+      remember_me : false
+    }
+  }
+  onChangeData = (field,val) => {
+    this.setState({
+        [field] : val
+    })
+  }
+  login = () => {
+          Swal.fire('กำลังเข้าสู่ระบบ..')
+          let data = this.state
+          console.log(data.password)
+          data.password = data.password ? bcrypt.hashSync(data.password, 8) : ''
+          console.log(data)
+          data.phone_number = data.phone_number ? data.phone_number.replace(/-/g, '') : ''
+          axios.post('/cms/auth/login', data).then(res=>{
+            const history = useHistory();
+            history.push('/cms')
+          })
+          .catch(function (error) {
+            Swal.fire({
+                title: 'ไม่สำเร็จ!',
+                icon: 'error',
+                html: error.response.data.message,
+              })
+          })
+  }
+  render () {
+    console.log(this.state)
+    return (
+      <>
+        <Col lg="5" md="7">
+          <Card className="bg-secondary shadow border-0">
+            <CardBody className="px-lg-5 py-lg-5">
+              <div className="text-center text-muted mb-4">
+                <small>เข้าสู่ระบบผ่านเบอร์โทร เเละรหัสผ่านของพนักงาน</small>
               </div>
-              <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
-                  Sign in
-                </Button>
-              </div>
-            </Form>
-          </CardBody>
-        </Card>
-        <Row className="mt-3">
-          <Col xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Forgot password?</small>
-            </a>
-          </Col>
-          <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Create new account</small>
-            </a>
-          </Col>
-        </Row>
-      </Col>
-    </>
-  );
+              <Form role="form">
+                <FormGroup className="mb-3">
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-mobile-button" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="เบอร์โทร"
+                      type="phone_number"
+                      onChange={(e)=>{
+                        this.onChangeData('phone_number', e.target.value)
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-lock-circle-open" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                      placeholder="รหัสผ่าน"
+                      type="password"
+                      autoComplete="new-password"
+                      onChange={(e)=>{
+                        this.onChangeData('password', e.target.value)
+                      }}
+                    />
+                  </InputGroup>
+                </FormGroup>
+                  <Checkbox
+                        defaultChecked
+                        color="primary"
+                        inputProps={{ 'aria-label': 'secondary checkbox' }}
+                        onChange={(e)=>{
+                          this.onChangeData('remember_me', e.target.checked)
+                        }}
+                        value='on'
+                    /> Remember me
+                <div className="text-center">
+                  <Button className="my-4" color="primary" type="button" onClick={this.login}>
+                    Sign in
+                  </Button>
+                </div>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </>
+    );
+  }
+  
 };
 
 export default Login;

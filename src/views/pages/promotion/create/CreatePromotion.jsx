@@ -85,102 +85,32 @@ class CreatePromotion extends Component {
                 <Header />
 
                 <Container className="" style={{ marginLeft: '0%' }} fluid>
-                    <Detail classes={classes} />
-                    <Footer />
-                </Container>
-            </>
-        )
-    }
-}
-
-class Detail extends Component {
-    render() {
-        const { classes } = this.props
-        const onChange = (e) => {
-            console.log(e.target.value)
-        }
-        return (
-            <>
-                <SubHeader header='รายละเอียด' isborder={false} />
-                <Row className="d-flex align-items-center pt-0" style={{ marginLeft: '10%' }} fluid>
-                    <Col md='5'>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label">ประเภทโปรโมชั่น</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value='10'
-                                label="ประเภทโปรโมชั่น"
-                            >
-                                <MenuItem value={10}>เงินกู้</MenuItem>
-                                <MenuItem value={20}>เงินฝาก</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Col>
-                </Row>
-                <Row className="d-flex align-items-center pt-3" style={{ marginLeft: '10%' }} fluid>
-                    <Col md='5'>
+                    
+                    <SubHeader header='รายละเอียด' isborder={false} />
+                    <Row className="d-flex align-items-center pt-3" style={{ marginLeft: '10%' }} fluid>
+                        <Col md='5'>
+                            <TextField
+                                classes={{ root: classes.inputname }}
+                                id="outlined-required"
+                                label="ชื่อโปรโมชั่น"
+                                defaultValue="ลดต้น ลดดอก"
+                                variant="outlined"
+                            />
+                        </Col>
+                    </Row>
+                    <Row className="d-flex align-items-center pt-3" style={{ marginLeft: '11%' }} fluid>
                         <TextField
                             classes={{ root: classes.inputname }}
                             id="outlined-required"
-                            label="ชื่อโปรโมชั่น"
-                            defaultValue="ลดต้น ลดดอก"
+                            label="รายละเอียด"
+                            defaultValue="จ่ายเงินต้น ลดดอกเบี้ยทันที"
                             variant="outlined"
+                            multiline
+                            rows={4}
                         />
-                    </Col>
-                </Row>
-                <Row className="d-flex align-items-center pt-3" style={{ marginLeft: '10%' }} fluid>
-                    <Col md='5'>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <TextField
-                                id="date"
-                                label="วันเริ่มโปรโมชั่น"
-                                type="date"
-                                defaultValue="2017-05-24"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                            />
-                        </FormControl>
-                    </Col>
-                    <Col md='5'>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <TextField
-                                id="date"
-                                label="วันสิ้นสุดโปรโมชั่น"
-                                type="date"
-                                defaultValue="2017-05-24"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                            />
-                        </FormControl>
-                    </Col>
-                </Row>
-
-                <Row className="d-flex align-items-center pt-3" style={{ marginLeft: '11%' }} fluid>
-                    <TextField
-                        classes={{ root: classes.inputname }}
-                        id="outlined-required"
-                        label="รายละเอียด"
-                        defaultValue="จ่ายเงินต้น ลดดอกเบี้ยทันที"
-                        variant="outlined"
-                        multiline
-                        rows={4}
-                    />
-                </Row>
-
-                <Row className="d-flex align-items-center" style={{ marginLeft: '10%',marginTop:'5%' }} fluid onClick={'Img'}>
-                    <i className='ni ni-fat-add mr-3' style={{ width: 20, fontSize: 20 }}></i>
-                    <Button color="primary" type="button">
-                    เพิ่มรูปภาพโปรโมชั่น
-                    </Button>
-                </Row>
-
+                    </Row>
+                    <Footer />
+                </Container>
             </>
         )
     }
@@ -212,7 +142,7 @@ class Footer extends Component {
                     ยกเลิก
                 </Button>
                 <Button color="primary" type="button">
-                    เสนอ
+                    สร้างโปรโมชั่น
                 </Button>
             </Row>
         )
