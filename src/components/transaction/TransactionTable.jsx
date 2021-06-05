@@ -9,28 +9,20 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import Moment from 'react-moment';
 
 const columns = [
-  { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อ', minWidth: 100 },
-  { id: 'position', label:'ตำเเหน่ง', minWidth: 100 },
-  { id: 'branch', label:'สาขา', minWidth: 100 },
-  { id: 'gender', label:'เพศ', minWidth: 100 },
-  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
-  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
+  { id: 'no', label: 'เลขที่ธุรกรรม', minWidth: 1 },
+  { id: 'type', label: 'ประเภทรายการ', minWidth: 100 },
+  { id: 'amount', label:'จำนวนเงิน', minWidth: 100 },
+  { id: 'time', label:'เวลา', minWidth: 100, time:true },
 ];
 
-function createData(no, name, position, branch, gender) {
-  return { no, name, position, branch, gender };
+function createData(no, type, amount, time) {
+  return { no, type, amount, time };
 }
 
-const rows = [
-  createData('1', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('2', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('3', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('4', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-  createData('5', 'นายแกน มงคลากร', 'ผู้จัดการ', 'สาขาเซ็นทรัลพระราม 2', 'ชาย'),
-];
+let rows = [];
 
 const styles = theme => ({
   root: {
@@ -43,7 +35,11 @@ const styles = theme => ({
 class TransactionTable extends Component{
   render () {
 
-    const {classes} = this.props
+    const {classes, transaction_list} = this.props
+    rows = [];
+    if(transaction_list) transaction_list.forEach((e, index)=>{
+      rows.push(createData(e.ID, e.Typename, e.Amount, e.TimeStamp))
+    })
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
@@ -76,10 +72,12 @@ class TransactionTable extends Component{
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                       {columns.map((column) => {
                           const value = row[column.id];
-                          if(column.button) {
+                          if(column.time) {
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  <Button color={column.color} outline size='sm' type="button" >{column.innerText}</Button>
+                                <Moment format="YYYY/MM/DD hh:mm:ss">
+                                    {value}
+                                </Moment>
                               </TableCell>
                               );
                           }

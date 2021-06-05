@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
-  { id: 'name', label: 'ชื่อ', minWidth: 100 },
+  { id: 'name', label: 'ชื่อผู้ขอสินเชื่อ', minWidth: 100 },
   { id: 'type', label:'ประเภท', minWidth: 100 },
   { id: 'price', label:'มูลค่า', minWidth: 100 },
   { id: 'details', label:'รายละเอียด', minWidth: 5 , button : true, color:'warning', innerText:'รายละเอียด' , link:' loan/info'},
@@ -25,13 +25,7 @@ function createData(no, name, type, price, status) {
   return { no, name, type, price, status };
 }
 
-const rows = [
-  createData('1', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('2', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('3', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('4', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-  createData('5', 'นายแกน มงคลากร', 'เงินกู้เพื่อซื้อบ้าน', '500,000 บาท', 'รอการอนุมัติ'),
-];
+let rows = []
 
 const styles = theme => ({
   root: {
@@ -43,8 +37,11 @@ const styles = theme => ({
 });
 class LoanTable extends Component{
   render () {
-
-    const {classes} = this.props
+    const {classes, loan_list} = this.props
+    rows = [];
+    if(loan_list) loan_list.forEach((e, index)=>{
+      rows.push(createData(e.loan_id, e.loan_request_name, e.loan_type_name, e.loan_amount, e.loan_status=='pending' ? 'รอการอนุมัติ' : e.loan_status=='accepted' ? 'ได้รับการอนุมัติ' : 'ไม่อนุมัติ'))
+    })
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
@@ -84,7 +81,7 @@ class LoanTable extends Component{
                           else 
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  {column.format && typeof value === 'number' ? column.format(value) : value}
+                                 <i className="bg-success" /> {column.format && typeof value === 'number' ? column.format(value) : value}
                               </TableCell>
                               );
                       })}

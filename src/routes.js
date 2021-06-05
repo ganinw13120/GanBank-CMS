@@ -44,7 +44,7 @@ var routes = [
   {
     path: "/transaction",
     name: "ธุรกรรม",
-    icon: "ni ni-single-02 text-yellow",
+    icon: "ni ni-single-copy-04 text-yellow",
     component: Transaction,
     layout: "/cms",
   },
@@ -58,14 +58,14 @@ var routes = [
   {
     path: "/promotion",
     name: "โปรโมชั่น",
-    icon: "ni ni-archive-2 text-warning",
+    icon: "ni ni-mobile-button text-blue",
     component: Promotion,
     layout: "/cms",
   },
   {
     path: "/Customer",
     name: "Customer",
-    icon: "ni ni-single-02 text-blue",
+    icon: "ni ni-circle-08 text-primary",
     component: Customer,
     layout: "/cms",
   },

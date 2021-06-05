@@ -3,6 +3,8 @@ import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class LoanHeader extends Component{
   render () {
+    const {loan_count_this_month, loan_count,total_amount,total_amount_this_month,unapproved_total_amount,approved_total_amount} = this.props
+    console.log(this.props)
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{zIndex:-1}}>
@@ -22,7 +24,7 @@ class LoanHeader extends Component{
                             จำนวนรายการเงินเชื่อ
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            329
+                            {loan_count}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -33,9 +35,9 @@ class LoanHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-arrow-up" /> {loan_count_this_month}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -52,7 +54,7 @@ class LoanHeader extends Component{
                             มูลค่าเงินเชื่อทั้งหมด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            329,989,000
+                            {total_amount.toLocaleString()}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -63,9 +65,9 @@ class LoanHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-arrow-up" /> {total_amount_this_month.toLocaleString()}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -79,10 +81,10 @@ class LoanHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            ดอกเบี้ยเฉลี่ย
+                            เงินเชื่อที่อนุมัติเเล้ว
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32%
+                          {approved_total_amount.toLocaleString()}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -93,9 +95,9 @@ class LoanHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-arrow-up" /> {unapproved_total_amount.toLocaleString()}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">รอการอนุมัติ</span>
                       </p>
                     </CardBody>
                   </Card>

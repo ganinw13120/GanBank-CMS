@@ -39,7 +39,7 @@ class AccountTable extends Component{
     const {classes, account_list} = this.props
     rows = [];
     if(account_list) account_list.forEach((e, index)=>{
-      rows.push(createData(index+1, e.account_no, `${e.customer_firstname} ${e.customer_middlename} ${e.customer_firstname}`, e.account_type_name))
+      rows.push(createData(index+1, e.account_no, e.account_name, e.account_type_name))
     })
     return (
       <>

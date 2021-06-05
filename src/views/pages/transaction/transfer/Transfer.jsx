@@ -6,11 +6,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
-import Input from '@material-ui/core/Input';
 import { OutlinedInput } from '@material-ui/core';
+import axios from 'axios';
+import Swal from 'sweetalert2' 
 
 const styles = theme => ({
   formControl: {
@@ -54,22 +54,77 @@ class Transfer extends Component{
   constructor (props) {
     super(props)
     this.state = {
-      person_amount : 1
+        dest_no : null,
+        dest_name : null,
+        origin_no : null,
+        origin_name : null,
+        amount : null,
+        bank_list : [],
+        bank : null
     }
   }
+  componentDidMount () {
+    axios.post('/cms/transaction/prepare').then(res=>{
+      this.setState({
+        bank_list : res.data,
+      })
+    })
+  }
+  onChangeData = (field,val) => {
+    this.setState({
+        [field] : val
+    })
+  }
+  formSubmit = () => {
+    console.log('submit..')
+
+    Swal.fire({
+      title: 'ยืนยันการทำรายการ',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Confirm'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.fire('กำลังทำรายการ..')
+          const data = this.state
+          data.bank_list = null
+          data.dest_no = data.dest_no.replace(/-/g, '').trim()
+          data.origin_no = data.origin_no.replace(/-/g, '').trim()
+          console.log(data)
+          axios.post('/cms/transaction/transfer', data).then(res=>{
+              Swal.fire({
+                  title: 'สำเร็จ!',
+                  icon: 'success',
+                  confirmButtonText:
+                    '<a href="/cms/transaction" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+                })
+          })
+          .catch(function (error) {
+            Swal.fire({
+                title: 'ไม่สำเร็จ!',
+                icon: 'error',
+                html: error.response.data.message,
+                confirmButtonText:
+                  '<a href="/cms/transaction" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
+              })
+          })
+      }
+    })
+  }
   render () {
-    const onChange = (e) => {
-      console.log(e)
-    }
     const {classes} = this.props
+    const {bank_list,dest_no,dest_name,origin_no, origin_name, amount, bank} = this.state
+    const submitable = dest_no && dest_name && origin_no && origin_name && amount && amount!=0 && bank
     return (
       <>
         <Header/>
 
         <Container className="" style={{marginLeft:'0%'}} fluid>
-        <Origin classes={classes}/>
-        <Destination  classes={classes}/>
-        <Footer />
+        <Origin classes={classes} onChangeData={this.onChangeData}/>
+        <Destination  classes={classes} onChangeData={this.onChangeData} bank_list={bank_list}/>
+        <Footer formSubmit={this.formSubmit} submitable={submitable}/>
         </Container>
       </>
     )
@@ -94,11 +149,28 @@ class Header extends Component {
 }
 
 class Origin extends Component {
-    render () {
-        const {classes} = this.props
-        const onChange = (e) => {
-          console.log(e.target.value)
+    constructor (props) {
+        super(props)
+        this.state = {
+            origin_no : null,
+            origin_name : null,
         }
+    }
+    onAccountChange = (val) =>{
+        const data = {
+            account_no : val.replace(/-/g, '').trim()
+        }
+        axios.post('/cms/account/name', data).then(res=>{
+            const {onChangeData} = this.props
+            onChangeData('origin_name', res.data.account_name)
+            this.setState({
+                origin_name : res.data.account_name
+            })
+        })
+    }
+    render () {
+        const {classes,onChangeData} = this.props 
+        const {origin_name} = this.state
         return (
             <>
                 <Container className="pt-5" style={{marginLeft:'0%'}} fluid>
@@ -113,10 +185,12 @@ class Origin extends Component {
                                 <FormControl variant="outlined" className={classes.accno}>
                                     <InputLabel  variant="outlined"  htmlFor="formatted-text-mask-input">เลขที่บัญชีธนาคาร</InputLabel>
                                     <OutlinedInput
-                                    value='000000000000'
                                     label='เลขที่บัญชีธนาคาร'
                                     // style={{fontSize:25}}
-                                    onChange={onChange}
+                                    onChange={(e)=>{
+                                        onChangeData('origin_no', e.target.value)
+                                        this.onAccountChange(e.target.value)
+                                    }}
                                     name="textmask"
                                     id="formatted-text-mask-input"
                                     inputComponent={AccountNumberMask}
@@ -128,8 +202,8 @@ class Origin extends Component {
                                 <TextField
                                 classes={{root: classes.accno}}
                                 id="outlined-required"
-                                label="ชื่อบัญชี"
-                                defaultValue="นายแกน มงคลากร"
+                                label={!origin_name?'ชื่อบัญชี':''}
+                                value={origin_name?origin_name:''}
                                 variant="outlined"
                                 disabled
                                 />
@@ -143,11 +217,38 @@ class Origin extends Component {
 }
 
 class Destination extends Component {
-    render () {
-        const {classes} = this.props
-        const onChange = (e) => {
-          console.log(e.target.value)
+    constructor (props) {
+        super(props)
+        this.state = {
+            dest_no : null,
+            dest_name : null,
         }
+    }
+    onAccountChange = (val) =>{
+        const data = {
+            account_no : val.replace(/-/g, '').trim()
+        }
+        axios.post('/cms/account/name', data).then(res=>{
+        // console.log(res)
+        const {onChangeData} = this.props
+        onChangeData('dest_name', res.data.account_name)
+            this.setState({
+                dest_name : res.data.account_name
+            })
+        })
+    }
+    onChangeBank = (e) => {
+        this.setState({
+            bank : e.target.value
+        })
+    }
+    render () {
+        const {classes,onChangeData,bank_list} = this.props
+        const {bank, dest_name} = this.state
+        let bank_render = []
+        if(bank_list) bank_list.forEach(e=>{
+            bank_render.push(<MenuItem value={e.bank_id}>{e.bank_name}</MenuItem>)
+        })
         return (
             <>
                 <Container className="pt-4 mt-5" style={{marginLeft:'0%', borderTop:'1px solid #DADADA'}} fluid>
@@ -165,12 +266,16 @@ class Destination extends Component {
                                     <Select
                                         labelId="demo-simple-select-outlined-label"
                                         id="demo-simple-select-outlined"
-                                        value='10'
+                                        value={bank}
+                                        onChange={
+                                            (e)=>{
+                                                this.onChangeBank(e)
+                                                onChangeData('bank', e.target.value)
+                                            }
+                                        }
                                         label="------------"
                                     >
-                                        <MenuItem value={10}>Gan Banking</MenuItem>
-                                        <MenuItem value={20}>ธนาคารกสิกรไทย</MenuItem>
-                                        <MenuItem value={30}>ธนาคารกรุงเทพ</MenuItem>
+                                        {bank_render}
                                     </Select>
                                     </FormControl>
                                 </FormControl>
@@ -179,10 +284,12 @@ class Destination extends Component {
                                 <FormControl variant="outlined" className={classes.accno}>
                                     <InputLabel  variant="outlined"  htmlFor="formatted-text-mask-input">เลขที่บัญชีธนาคาร</InputLabel>
                                     <OutlinedInput
-                                    value='000000000000'
                                     label='เลขที่บัญชีธนาคาร'
                                     // style={{fontSize:25}}
-                                    onChange={onChange}
+                                    onChange={(e)=>{
+                                        onChangeData('dest_no', e.target.value)
+                                        this.onAccountChange(e.target.value)
+                                    }}
                                     name="textmask"
                                     id="formatted-text-mask-input"
                                     inputComponent={AccountNumberMask}
@@ -194,9 +301,23 @@ class Destination extends Component {
                                 <TextField
                                 classes={{root: classes.accno}}
                                 id="outlined-required"
-                                label="จำนวนเงิน (บาท)"
-                                defaultValue="999"
+                                label={!dest_name?'ชื่อบัญชี':''}
+                                value={dest_name?dest_name:''}
                                 variant="outlined"
+                                disabled
+                                />
+                            </Row>
+                            <Row className='mt-3'> 
+                                <TextField
+                                classes={{root: classes.accno}}
+                                id="outlined-required"
+                                label="จำนวนเงิน (บาท)"
+                                variant="outlined"
+                                onChange={
+                                    (e)=>{
+                                        onChangeData('amount', e.target.value)
+                                    }
+                                }
                                 />
                             </Row>
                         </Col>
@@ -209,13 +330,14 @@ class Destination extends Component {
 
 class Footer extends Component {
     render () {
+        const {submitable, formSubmit} = this.props
         return (
             <Row className="d-flex align-items-center mt-5 justify-content-md-flex-end"  style={{marginLeft:'10%', paddingBottom:100}} fluid>
 
                 <Button color="secondary" type="button">
                     ยกเลิก
                 </Button>
-                <Button color="primary" type="button">
+                <Button color="primary" type="button" disabled={!submitable} onClick={formSubmit}>
                     ทำรายากร
                 </Button>
           </Row>
