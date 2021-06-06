@@ -57,7 +57,7 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                            {this.props.transfer_amount ? this.props.transfer_amount : 'ออนไลน์'}
+                            {this.props.transfer_amount ? this.props.transfer_amount.toLocaleString() : 'ออนไลน์'}
                         </span>{" "}
                         <span className="text-nowrap">บาท</span>
                       </p>
@@ -88,7 +88,7 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          {this.props.withdraw_amount ? this.props.withdraw_amount : 'ออนไลน์'}
+                          {this.props.withdraw_amount ? this.props.withdraw_amount.toLocaleString() : 'ออนไลน์'}
                         </span>{" "}
                         <span className="text-nowrap">บาท</span>
                       </p>
@@ -118,7 +118,7 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          {this.props.deposit_amount ? this.props.deposit_amount : 'ออนไลน์'}
+                          {this.props.deposit_amount ? this.props.deposit_amount.toLocaleString() : 'ออนไลน์'}
                         </span>{" "}
                         <span className="text-nowrap">บาท</span>
                       </p>

@@ -82,7 +82,7 @@ class AccountHeader extends Component{
                           >
                             มูลค่าเงินฝาก
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">{this.props.deposit ? this.props.deposit.sum.toLocaleString() : ''}</span>
+                          <span className="h2 font-weight-bold mb-0">{this.props.deposit && this.props.deposit.sum ? this.props.deposit.sum.toLocaleString() : ''}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -92,7 +92,7 @@ class AccountHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="mr-2">
-                          เฉลี่ย {this.props.deposit ? this.props.deposit.avg.toFixed(1).toLocaleString() : ''} บาท
+                          เฉลี่ย {this.props.deposit && this.props.deposit.avg ? this.props.deposit.avg.toFixed(1).toLocaleString() : ''} บาท
                         </span>{" "}
                       </p>
                     </CardBody>
