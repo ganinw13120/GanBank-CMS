@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2' 
 import axios from 'axios';
+import { PanoramaSharp } from "@material-ui/icons";
 
 
 const styles = theme => ({
@@ -30,7 +31,7 @@ const styles = theme => ({
         minWidth: 300
     }
 })
-class CreatePromotion extends Component {
+class EditPromotion extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -42,6 +43,16 @@ class CreatePromotion extends Component {
       this.setState({
           [field] : val
       })
+    }
+    componentDidMount() {
+        const { match: { params } } = this.props;
+        axios.post('/cms/promotion/getbyid', {id:params.id}).then(res=>{
+            console.log(res)
+            this.setState({
+                name : res.data.promotion_title,
+                detail : res.data.promotion_detail
+            })
+        })
     }
     formsubmit = ()=>{
         Swal.fire({
@@ -82,7 +93,8 @@ class CreatePromotion extends Component {
                             <TextField
                                 classes={{ root: classes.inputname }}
                                 id="outlined-required"
-                                label="ชื่อโปรโมชั่น"
+                                label={this.state.name ? '' : "ชื่อโปรโมชั่น"}
+                                value={this.state.name}
                                 onChange={(e)=>{
                                     this.onChangeState('name', e.target.value)
                                 }}
@@ -94,11 +106,12 @@ class CreatePromotion extends Component {
                         <TextField
                             classes={{ root: classes.inputname }}
                             id="outlined-required"
-                            label="รายละเอียด"
+                            label= {this.state.detail ? '':"รายละเอียด"}
                             onChange={(e)=>{
                                 this.onChangeState('detail', e.target.value)
                             }}
                             variant="outlined"
+                            value={this.state.detail}
                             multiline
                             rows={4}
                         />
@@ -118,7 +131,7 @@ class Header extends Component {
                 <Container className="d-flex align-items-center" fluid>
                     <Row>
                         <Col>
-                            <h1 className="display-2 text-white text-bold" >แบบฟอร์มเพิ่มโปรโมชั่น</h1>
+                            <h1 className="display-2 text-white text-bold" >แบบฟอร์มแก้ไขโปรโมชั่น</h1>
                         </Col>
                     </Row>
                 </Container>
@@ -136,7 +149,7 @@ class Footer extends Component {
                     ยกเลิก
                 </Button>
                 <Button color="primary" type="button" disabled={!this.props.submitable} onClick={this.props.formsubmit}>
-                    สร้างโปรโมชั่น
+                    บันทึก
                 </Button>
             </Row>
         )
@@ -162,4 +175,4 @@ class SubHeader extends Component {
         )
     }
 }
-export default withStyles(styles)(CreatePromotion);
+export default withStyles(styles)(EditPromotion);

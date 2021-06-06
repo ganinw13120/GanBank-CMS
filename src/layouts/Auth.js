@@ -11,8 +11,11 @@ const Auth = (props) => {
 
   React.useEffect(() => {
     document.body.classList.add("bg-info");
+    document.body.classList.remove("bg-white");
     return () => {
+      document.body.classList.add("bg-info");
       document.body.classList.remove("bg-default");
+      document.body.classList.remove("bg-white");
     };
   }, []);
   React.useEffect(() => {
@@ -21,7 +24,7 @@ const Auth = (props) => {
     mainContent.current.scrollTop = 0;
   }, [location]);
 
-  const getRoutes = (routes) => {
+  const getRoutes = (routes,loginsuccess) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/auth") {
         return (
@@ -36,9 +39,11 @@ const Auth = (props) => {
       }
     });
   };
-
   const history = useHistory();
   if(localStorage.getItem('token')) {
+    history.push('/cms')
+  }
+  const loginsuccess = () => {
     history.push('/cms')
   }
   return (
@@ -77,7 +82,7 @@ const Auth = (props) => {
         <Container className="mt--8 pb-5">
           <Row className="justify-content-center">
             <Switch>
-              {getRoutes(routes)}
+              {getRoutes(routes, loginsuccess)}
               <Redirect from="*" to="/auth/login" />
             </Switch>
           </Row>

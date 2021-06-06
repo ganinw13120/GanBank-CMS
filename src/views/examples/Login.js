@@ -16,14 +16,14 @@ import {
 import bcrypt from 'bcryptjs'
 import axios from 'axios';
 import Swal from 'sweetalert2' 
-
 class Login extends Component {
   constructor (props) {
     super(props)
     this.state = {
       phone_number : null,
       password : null,
-      remember_me : false
+      remember_me : false,
+      islogin:false
     }
   }
   onChangeData = (field,val) => {
@@ -35,15 +35,18 @@ class Login extends Component {
           Swal.fire('กำลังเข้าสู่ระบบ..')
           let data = this.state
           console.log(data.password)
-          data.password = data.password ? bcrypt.hashSync(data.password, 8) : ''
           console.log(data)
           data.phone_number = data.phone_number ? data.phone_number.replace(/-/g, '') : ''
           axios.post('/cms/auth/login', data).then(res=>{
-            const history = useHistory();
-            history.push('/cms')
+            console.log(res.data)
+            localStorage.setItem('token', res.data.token)
+            localStorage.setItem('level', res.data.level)
+            localStorage.setItem('name', res.data.prefix+res.data.firstname +' '+ res.data.middlename+' ' + res.data.lastname )
+            window.location.reload();
           })
           .catch(function (error) {
-            Swal.fire({
+            console.log(error)
+            if(error.response)Swal.fire({
                 title: 'ไม่สำเร็จ!',
                 icon: 'error',
                 html: error.response.data.message,
@@ -94,7 +97,7 @@ class Login extends Component {
                     />
                   </InputGroup>
                 </FormGroup>
-                  <Checkbox
+                  {/* <Checkbox
                         defaultChecked
                         color="primary"
                         inputProps={{ 'aria-label': 'secondary checkbox' }}
@@ -102,10 +105,10 @@ class Login extends Component {
                           this.onChangeData('remember_me', e.target.checked)
                         }}
                         value='on'
-                    /> Remember me
+                    /> Remember me */}
                 <div className="text-center">
                   <Button className="my-4" color="primary" type="button" onClick={this.login}>
-                    Sign in
+                    เข้าสู่ระบบ
                   </Button>
                 </div>
               </Form>

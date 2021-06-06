@@ -7,7 +7,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
+import Swal from 'sweetalert2' 
+import axios from 'axios';
 import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
@@ -15,12 +16,13 @@ const columns = [
   { id: 'code', label: 'เลขที่บัญชี', minWidth: 100 },
   { id: 'name', label: 'ชื่อบัญชี', minWidth: 100 },
   { id: 'type', label: 'ประเภท', minWidth: 100 },
-  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
-  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
+  { id: 'status', label: 'สถานะ', minWidth: 100 },
+  { id: 'del', label: 'ระงับ', minWidth: 5, button : true, color:'danger', innerText:'ระงับ' , val:'delete'},
+  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข', val:'edit'},
 ];
 
-function createData(no, code, name, type) {
-  return { no, code, name, type };
+function createData(no, code, name, type,status) {
+  return { no, code, name, type ,status};
 }
 
 let rows = [];
@@ -34,13 +36,52 @@ const styles = theme => ({
   },
 });
 class AccountTable extends Component{
+  action = (val, id) =>{
+    if(val=='delete') {
+      
+      Swal.fire({
+        title: 'ยีนยันการระงับบัญชี',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirm'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire('กำลังระงับบัญชี..')
+            const data = {
+              id : id+'',
+            }
+            axios.post('/cms/account/suspend', data).then(res=>{
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    icon: 'success'
+                  })
+                  window.location.reload();
+            })
+            .catch(function (error) {
+              Swal.fire({
+                  title: 'ไม่สำเร็จ!',
+                  icon: 'error',
+                  html: error.response.data.message,
+                })
+            })
+        }
+      })
+    }
+    else {
+      // alert('edit')
+      window.location="account/edit/"+id
+    }
+  }
   render () {
 
     const {classes, account_list} = this.props
     rows = [];
     if(account_list) account_list.forEach((e, index)=>{
-      rows.push(createData(index+1, e.account_no, e.account_name, e.account_type_name))
+      rows.push(createData(index+1, e.account_no, e.account_name, e.account_type_name, e.account_status==='active' ? 'ใช้งาน' : 'ระงับ'))
     })
+    console.log(account_list)
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
@@ -73,7 +114,7 @@ class AccountTable extends Component{
                           if(column.button) {
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  <Button color={column.color} outline size='sm' type="button" >{column.innerText}</Button>
+                                  <Button color={column.color} outline size='sm' type="button" onClick={()=>{ if(column.val) this.action(column.val, row.code) }} >{column.innerText}</Button>
                               </TableCell>
                               );
                           }

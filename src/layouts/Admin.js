@@ -7,8 +7,11 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import CreateAccount from 'views/pages/account/create'
+import EditAccount from 'views/pages/account/edit'
 import CreateBranch from 'views/pages/branch/create'
+import EditBranch from 'views/pages/branch/edit'
 import CreateEmployee from 'views/pages/employee/create'
+import EditEmployee from 'views/pages/employee/edit'
 
 import Transfer from 'views/pages/transaction/transfer'
 import Deposit from 'views/pages/transaction/deposit'
@@ -18,12 +21,15 @@ import LoanInfo from 'views/pages/loan/info'
 
 import routes from "routes.js";
 import CreatePromotion from "views/pages/promotion/create/CreatePromotion";
+import EditPromotion from "views/pages/promotion/edit/EditPromotion";
+import axios from 'axios';
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
   React.useEffect(() => {
+    document.body.classList.add("bg-white");
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
@@ -62,6 +68,18 @@ const Admin = (props) => {
   if(!localStorage.getItem('token')) {
     history.push('/auth/login')
   }
+  else {
+    axios.post('/cms/auth/check', {token:localStorage.getItem('token')}).then(res=>{
+      console.log(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+      localStorage.removeItem('token')
+      localStorage.removeItem('level')
+      document.body.classList.add("bg-info");
+      history.push('/auth/login')
+    })
+  }
 
   return (
     <>
@@ -82,13 +100,17 @@ const Admin = (props) => {
         <Switch>
           {getRoutes(routes)}
           <Route path='/cms/account/create' component={CreateAccount}></Route>
+          <Route path='/cms/account/edit/:id' component={EditAccount}></Route>
           <Route path='/cms/branch/create' component={CreateBranch}></Route>
+          <Route path='/cms/branch/edit/:id' component={EditBranch}></Route>
           <Route path='/cms/employee/create' component={CreateEmployee}></Route>
+          <Route path='/cms/employee/edit/:id' component={EditEmployee}></Route>
           <Route path='/cms/transaction/transfer' component={Transfer}></Route>
           <Route path='/cms/transaction/deposit-withdraw' component={Deposit}></Route>
           <Route path='/cms/loan/create' component={CreateLoan}></Route>
           <Route path='/cms/loan/info/:id' component={LoanInfo}></Route>
           <Route path='/cms/promotion/create' component={CreatePromotion}></Route>
+          <Route path='/cms/promotion/edit/:id' component={EditPromotion}></Route>
           <Redirect from="*" to="/cms/index" />
           
         </Switch>

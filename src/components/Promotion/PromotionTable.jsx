@@ -7,31 +7,23 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import Swal from 'sweetalert2' 
+import axios from 'axios';
 
 const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
   { id: 'name', label: 'ชื่อโปรโมชั่น', minWidth: 100 },
-  { id: 'type', label:'ประเภท', minWidth: 100 },
-  { id: 'date', label:'ระยะเวลาการจัดโปรโมชั่น', minWidth: 100 },
-  { id: 'Detail', label:'รายละเอียด', minWidth: 100 },
-  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' },
-  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข'},
+  { id: 'type', label:'รายละเอียด', minWidth: 100 },
+  { id: 'del', label: 'ลบ', minWidth: 5, button : true, color:'danger', innerText:'ลบ' , val:'delete' },
+  { id: 'edit', label: 'แก้ไข', minWidth: 5 , button : true, color:'warning', innerText:'แก้ไข' , val:'edit'},
 ];
 
-function createData(no, name, type, date, Detail) {
-  return { no, name, type, date, Detail };
+function createData(no, name, type, id) {
+  return { no, name, type, id };
 }
 
-const rows = [
-  createData('1', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
-  createData('2', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
-  createData('3', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
-  createData('4', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
-  createData('5', 'ลดต้น ลดดอก', 'เงินกู้', '1-30 มีนาคม 2021', 'จ่ายเงินต้น ลดดอกเบี้ยทันที'),
-  createData('6', 'ฝากประจำดอกเบี้ยสองเท่าจากที่อื่น', 'เงินฝาก', '15-31 มีนาคม 2021', 'เงินฝากประจำพิเศษ ระยะเวลา 5 เดือน อัตราดอกเบี้ย 0.425% ต่อปี'),
-];
+let rows = [];
 
 const styles = theme => ({
   root: {
@@ -42,9 +34,51 @@ const styles = theme => ({
   },
 });
 class PromotionTable extends Component{
+  action = (val, id) =>{
+    if(val=='delete') {
+      
+      Swal.fire({
+        title: 'ยืนยันการลบโปรโมชั่น',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirm'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire('กำลังลบโปรโมชั่น..')
+            const data = {
+              promotion_id : id+'',
+            }
+            console.log(data)
+            axios.post('/cms/promotion/delete', data).then(res=>{
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    icon: 'success'
+                  })
+                  window.location.reload();
+            })
+            .catch(function (error) {
+              Swal.fire({
+                  title: 'ไม่สำเร็จ!',
+                  icon: 'error',
+                  html: error.response.data.message,
+                })
+            })
+        }
+      })
+    }
+    else {
+      window.location="promotion/edit/"+id
+    }
+  }
   render () {
-
-    const {classes} = this.props
+    
+    const {classes, promotion_list} = this.props
+    rows = []
+    if(promotion_list && promotion_list.length) promotion_list.forEach((e, index)=>{
+      rows.push(createData(index+1, e.promotion_title, e.promotion_detail, e.promotion_id))
+    })
     return (
       <>
       <Container className="mt--7" style={{borderRadius:10 , fontFamily:'Thasadith'}}> 
@@ -77,7 +111,7 @@ class PromotionTable extends Component{
                           if(column.button) {
                               return (
                               <TableCell key={column.id} align={column.align} style={{fontFamily:'Thasadith'}}>
-                                  <Button color={column.color} outline size='sm' type="button" >{column.innerText}</Button>
+                                  <Button color={column.color} outline size='sm' type="button"  onClick={()=>{ if(column.val) this.action(column.val, row.id) }}>{column.innerText}</Button>
                               </TableCell>
                               );
                           }

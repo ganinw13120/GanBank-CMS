@@ -134,7 +134,7 @@ class CreateLoan extends Component{
           
           const temp = Object.assign({},this.state)
           temp.person_info.forEach(e=>{
-            if(e.tel)e.tel = e.tel.replace(/-/g, '')
+            if(e.phone_number)e.phone_number = e.phone_number.replace(/-/g, '')
             if(e.idcard)e.idcard = e.idcard.replace(/-/g, '')
           })
           const data = {
@@ -479,7 +479,7 @@ class GuaranteeDetail extends Component {
         let other_infomation = []
         let i = 0
         for (i=0 ; i < person_amount ; i++ ){ 
-            person_infomation.push(<GuranteePerson index={i}  classes={classes} onInfoChange={this.onPersonInfoChange} relation_list={relation_list} career_list={career_list}/>)
+            person_infomation.push(<GuranteePerson index={i}  classes={classes} onInfoChange={this.onPersonInfoChange} relation_list={relation_list} career_list={career_list} province_list={province_list}/>)
         }
         for (i=0 ; i < property_amount ; i++ ){ 
             property_infomation.push(<GuaranteeProperty index={i}  classes={classes} onInfoChange={this.onPropertyInfoChange} province_list={province_list}/>)
@@ -736,7 +736,7 @@ class GuranteePerson extends Component {
                     </Col>
                 </Row>
 
-                <Row className="d-flex align-items-center pt-3 pb-5"  style={{marginLeft:'10%'}}  fluid>
+                <Row className="d-flex align-items-center pt-3 pb-3"  style={{marginLeft:'10%'}}  fluid>
                     <Col md='3'>
                         <TextField
                             classes={{root: classes.inputname}}
@@ -764,6 +764,7 @@ class GuranteePerson extends Component {
                         </FormControl>
                     </Col>    
                 </Row>
+            <Address classes={classes} province_list={this.props.province_list} onChangeState={this.onChangeData} code='guarantor'/>
             </>
         )
     }
@@ -780,10 +781,10 @@ class GuaranteeProperty extends Component {
         }
     }
     onChangeOwner = (index, val) => {
-        let cached = [...this.state.info]
+        let cached = [...this.state.owner_info]
         cached[index] = val
         this.setState({
-          info : cached
+            owner_info : cached
         })
     }
     onChangeData = (field,val) => {
@@ -830,7 +831,7 @@ class GuaranteeProperty extends Component {
                     <TextField
                         classes={{root: classes.inputname}}
                         id="outlined-required"
-                        label="เนื้อที่"
+                        label="เนื้อที่ (ไร่)"
                         onChange={(e)=>{
                             this.onChangeData('area', e.target.value)
                         }}
@@ -928,17 +929,6 @@ class Address extends Component {
             <>
                 
                     <Row className="d-flex align-items-center"  style={{marginLeft:'10%'}} fluid>
-                        <Col md='5' className=''>
-                            <TextField
-                            classes={{root: classes.inputname}}
-                            id="outlined-required"
-                            label="ชื่อสถานที่"
-                            variant="outlined"
-                            onChange={(e)=>{
-                                onChangeState(code+'address_name', e.target.value)
-                            }}
-                            />
-                        </Col>
                         <Col md='6' className=''>
                             <TextField
                             classes={{root: classes.inputname}}
@@ -947,6 +937,17 @@ class Address extends Component {
                             variant="outlined"
                             onChange={(e)=>{
                                 onChangeState(code+'address', e.target.value)
+                            }}
+                            />
+                        </Col>
+                        <Col md='5' className=''>
+                            <TextField
+                            classes={{root: classes.inputname}}
+                            id="outlined-required"
+                            label="ชื่อสถานที่"
+                            variant="outlined"
+                            onChange={(e)=>{
+                                onChangeState(code+'address_name', e.target.value)
                             }}
                             />
                         </Col>
@@ -1066,7 +1067,7 @@ class GuaranteeOther extends Component {
     }
     render () {
         const {owner_amount} = this.state
-        const {classes,onChangeData} = this.props
+        const {classes,onInfoChange} = this.props
         let owner = []
         let i = 0
         for (i=0 ; i < owner_amount ; i++ ){ 
@@ -1088,7 +1089,7 @@ class GuaranteeOther extends Component {
                             id="outlined-required"
                             label="รายละเอียดหลักประกัน"
                             onChange={(e)=>{
-                                onChangeData('detail', e.target.value)
+                                this.onChangeData('detail', e.target.value)
                             }}
                             variant="outlined"
                         />
@@ -1100,7 +1101,7 @@ class GuaranteeOther extends Component {
                             id="outlined-required"
                             label="มูลค่า (บาท)"
                             onChange={(e)=>{
-                                onChangeData('price', e.target.value)
+                                this.onChangeData('price', e.target.value)
                             }}
                             variant="outlined"
                         />

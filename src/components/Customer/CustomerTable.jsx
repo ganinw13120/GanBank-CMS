@@ -14,20 +14,15 @@ const columns = [
   { id: 'no', label: 'ลำดับที่', minWidth: 1 },
   { id: 'name', label: 'ชื่อลูกค้า', minWidth: 100 },
   { id: 'phone', label:'เบอร์โทร', minWidth: 100 },
-  { id: 'Detail', label:'รายละเอียด', minWidth: 100 },
+  { id: 'Detail', label:'อาชีพ', minWidth: 100 },
+  { id: 'income', label:'รายได้', minWidth: 100 },
 ];
 
-function createData(no, name, phone, Detail) {
-  return { no, name, phone, Detail };
+function createData(no, name, phone, Detail,income) {
+  return { no, name, phone, Detail,income };
 }
 
-const rows = [
-  createData('1', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีสองบัญชี'),
-  createData('2', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีบ้านมีรถ'),
-  createData('3', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีหลุย'),
-  createData('4', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีกุชชี่เบล'),
-  createData('5', 'นายเจษฎา โสพุดอ่อน', '0987654321', 'มีคอนโด'),
-];
+let rows = []
 
 const styles = theme => ({
   root: {
@@ -39,7 +34,11 @@ const styles = theme => ({
 });
 class CustomerTable extends Component{
   render () {
-
+    const {customer_list} = this.props
+    console.log(customer_list)
+    if(customer_list) customer_list.forEach((e, index)=>{
+      rows.push(createData(index+1, `${e.customer_prefix}${e.customer_firstname} ${e.customer_middlename?e.customer_middlename:''} ${e.customer_lastname}`, e.customer_phone_number, e.career_name,e.customer_income ))
+    })
     const {classes} = this.props
     return (
       <>

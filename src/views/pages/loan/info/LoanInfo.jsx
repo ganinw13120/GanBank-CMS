@@ -181,6 +181,16 @@ class Detail extends Component {
       guarantor_render.push(<SubHeader header='ผู้ค้ำประกัน' isborder={true} />)
       this.props.guarantor.forEach(e=>{
       guarantor_render.push(<>
+
+      <Container className="d-flex align-items-center" style={{ marginLeft: '0%'}} fluid>
+        <Row>
+          <Col className='pr-8'>
+            <Container>
+              <h3 className="display-6 pt-3 pb-4 " >บุคคลค้ำประกันที่ {guarantor_render.length}</h3>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
           <Container>
             ชื่อ-สกุล : {e.guarantor_firstname} {e.guarantor_middlename} {e.guarantor_lastname}
               </Container>
@@ -202,7 +212,7 @@ class Detail extends Component {
           <Container>
             อีเมล : {e.guarantor_email}
               </Container>
-          <Container>
+          <Container style={{marginBottom:20}}>
             เบอร์โทร : {e.guarantor_phone_number}
               </Container>
       
@@ -276,22 +286,10 @@ if(this.props.guarantee) {
           รายละเอียดหลักประกัน : {e.guarantee_name}
             </Container>
         <Container>
-          เนื้อที่ :  {e.guarantee_price} ไร่
+          มูลค่า :  {e.guarantee_price} บาท
             </Container>
         <Container>
-          ชื่อ-สกุล เจ้าของกรมสิทธิ์ : {guarantee_owners}
-            </Container>
-        <Container>
-          จังหวัด : {e.province_name}
-             </Container>
-        <Container>
-          เขต/อำเภอ : {e.amphur_name}
-             </Container>
-        <Container>
-          แขวง/ตำบล  : {e.district_name}
-              </Container>
-        <Container style={{marginBottom:20}}>
-          รหัสไปรษณีย์  : {e.district_postcode}
+          {guarantee_owners.length!=0 ? 'ชื่อ-สกุล เจ้าของกรมสิทธิ์ :' : ''} {guarantee_owners}
             </Container>
           
   </>)

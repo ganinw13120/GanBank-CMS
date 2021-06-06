@@ -15,7 +15,7 @@ class Account extends Component{
   componentDidMount () {
     axios.post('/cms/account/info').then(res=>{
       this.setState({
-        account_list : res.data,
+        account_list : res.data.account_list,
       })
     })
   }

@@ -12,10 +12,11 @@ import Transaction from 'views/pages/transaction'
 import Loan from 'views/pages/loan'
 import Promotion from 'views/pages/promotion'
 import Customer from 'views/pages/Customer'
+import Logout from 'views/pages/logout'
 var routes = [
   {
     path: "/index",
-    name: "Dashboard",
+    name: "ภาพรวม",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/cms",
@@ -67,6 +68,13 @@ var routes = [
     name: "ลูกค้า",
     icon: "ni ni-circle-08 text-primary",
     component: Customer,
+    layout: "/cms",
+  },
+  {
+    path: "/logout",
+    name: "ออกจากระบบ",
+    icon: "ni ni-button-power text-red",
+    component: Logout,
     layout: "/cms",
   },
   // {

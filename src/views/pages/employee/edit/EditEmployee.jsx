@@ -10,9 +10,9 @@ import Radio from '@material-ui/core/Radio';
 import TextField from '@material-ui/core/TextField';
 import MaskedInput from 'react-text-mask';
 import { OutlinedInput } from '@material-ui/core';
+import axios from 'axios';
 import bcrypt from 'bcryptjs'
 import Swal from 'sweetalert2' 
-import axios from 'axios';
 import clsx from 'clsx';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
@@ -71,7 +71,7 @@ function IDCardMask(props) {
       );
     }
 
-class CreateEmployee extends Component{
+class EditEmployee extends Component{
   constructor (props) {
     super(props)
     this.state = {
@@ -124,7 +124,7 @@ class CreateEmployee extends Component{
   }
   formsubmit = () => {
     Swal.fire({
-        title: 'ยืนยันการเพิ่มพนักงาน',
+        title: 'ยืนยันการแก้ไขพนักงาน',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -132,7 +132,8 @@ class CreateEmployee extends Component{
         confirmButtonText: 'Confirm'
       }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire('กำลังเพิ่มพนักงาน..')
+            Swal.fire('กำลังแก้ไขพนักงาน..')
+            const { match: { params } } = this.props;
             const {branch_id, address, address_name, district_id, position_id} = this.state
             let data = info
             data.branch_id = branch_id
@@ -140,11 +141,11 @@ class CreateEmployee extends Component{
             data.address_name = address_name
             data.district_id = district_id
             data.position_id = position_id
-            data.password = bcrypt.hashSync(data.password, 8);
+            data.staff_id = params.id
             data.idcard = data.idcard.replace(/-/g, '')
             data.phone_number = data.phone_number.replace(/-/g, '')
             console.log(data)
-            axios.post('/cms/staff/create', data).then(res=>{
+            axios.post('/cms/staff/edit', data).then(res=>{
                 Swal.fire({
                     title: 'สำเร็จ!',
                     icon: 'success',
@@ -183,7 +184,7 @@ class Header extends Component {
             <Container className="d-flex align-items-center" fluid>
                 <Row>
                     <Col>
-                    <h1 className="display-2 text-white text-bold" >แบบฟอร์มสมัครพนักงาน</h1>
+                    <h1 className="display-2 text-white text-bold" >แบบฟอร์มแก้ไขข้อมูลพนักงาน</h1>
                     </Col>
                 </Row>
                 </Container>
@@ -548,32 +549,6 @@ class StaffInfo extends Component {
                             }}
                         />
                     </Col>
-                    <Col md='4' className='mt-4'>
-
-                        <FormControl className={clsx(classes.formControl)} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type={showpassword ? 'text' : 'password'}
-                            value={password}
-                            onChange={(e)=>{
-                                this.onChangeData('password', e.target.value)
-                            }}
-                            endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={this.handleClickShowPassword}
-                                edge="end"
-                                >
-                                {showpassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                            }
-                            labelWidth={70}
-                        />
-                        </FormControl>
-                    </Col>
                 </Row>
             </>
         )
@@ -758,7 +733,7 @@ class Footer extends Component {
                     ยกเลิก
                 </Button>
                 <Button color="primary" type="button" disabled={!submitable} onClick={formsubmit}>
-                    เพิ่มพนักงาน
+                    แก้ไขพนักงาน
                 </Button>
           </Row>
         )
@@ -783,4 +758,4 @@ class SubHeader extends Component {
         )
     }
 }
-export default withStyles(styles)(CreateEmployee);
+export default withStyles(styles)(EditEmployee);
