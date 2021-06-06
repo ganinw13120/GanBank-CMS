@@ -22,7 +22,7 @@ class TransactionHeader extends Component{
                             จำนวนธุรกรรมวันนี้
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            320
+                            {this.props.transaction}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -33,9 +33,9 @@ class TransactionHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {this.props.transaction_this_month}
                         </span>{" "}
-                        <span className="text-nowrap">จากเมื่อวาน</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -49,10 +49,10 @@ class TransactionHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            มูลค่า
+                            จำนวนการโอนเงิน
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            98,893,441
+                           {this.props.transfer}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -63,9 +63,9 @@ class TransactionHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {this.props.transfer_this_month}
                         </span>{" "}
-                        <span className="text-nowrap">จากเมื่อวาน</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -79,10 +79,10 @@ class TransactionHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            มูลค่าการฝากเงิน
+                            จำนวนการฝากเงิน
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32,014,900
+                           {this.props.deposit}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -93,9 +93,9 @@ class TransactionHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {this.props.deposit_this_month}
                         </span>{" "}
-                        <span className="text-nowrap">จากเมื่อวาน</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -109,10 +109,10 @@ class TransactionHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            มูลค่าการโอนเงิน
+                            จำนวนการถอนเงิน
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            31,441,247
+                           {this.props.withdraw}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -123,9 +123,9 @@ class TransactionHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                           {this.props.withdraw_this_month}
                         </span>{" "}
-                        <span className="text-nowrap">จากเมื่อวาน</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>

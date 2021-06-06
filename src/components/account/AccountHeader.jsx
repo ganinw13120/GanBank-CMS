@@ -3,6 +3,7 @@ import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class AccountHeader extends Component{
   render () {
+    console.log(this.props)
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{zIndex:-1}}>
@@ -22,7 +23,7 @@ class AccountHeader extends Component{
                             จำนวนบัญชีธนาคาร
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {this.props.count ? this.props.count.toLocaleString() : 0}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -33,33 +34,9 @@ class AccountHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-arrow-up" /> {this.props.count_this_month ? this.props.count_this_month.toLocaleString() : 0}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
-                      </p>
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col lg="6" xl="3">
-                  <Card className="card-stats mb-4 mb-xl-0">
-                    <CardBody>
-                      <p className="mb-0 text-muted text-sm">
-                        <span className="text-success mr-2">
-                          <i className="fas fa-arrow-down" /> 32,111
-                        </span>{" "}
-                        <span className="text-nowrap">บัญชีฝากประจำ</span>
-                      </p>
-                      <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-success mr-2">
-                          <i className="fas fa-arrow-down" /> 15,222
-                        </span>{" "}
-                        <span className="text-nowrap">บัญชีออมทรัพย์</span>
-                      </p>
-                      <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-danger mr-2">
-                          <i className="fas fa-arrow-down" /> 98,222
-                        </span>{" "}
-                        <span className="text-nowrap">บัญชีเงินกู้</span>
+                        <span className="text-nowrap">ในเดือนนี้</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -73,9 +50,39 @@ class AccountHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Sales
+                            ประเภทบัญชีที่มากที่สุด
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">
+                            {this.props.most_type ? this.props.most_type.account_type_name :''}
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-chart-bar" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                            {this.props.most_type ? this.props.most_type.count.toLocaleString() : ''}
+                        </span>{" "}
+                        <span className="text-nowrap">บัญชี</span>
+                      </p>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            มูลค่าเงินฝาก
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">{this.props.deposit ? this.props.deposit.sum.toLocaleString() : ''}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -84,10 +91,9 @@ class AccountHeader extends Component{
                         </Col>
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-warning mr-2">
-                          <i className="fas fa-arrow-down" /> 1.10%
+                        <span className="mr-2">
+                          เฉลี่ย {this.props.deposit ? this.props.deposit.avg.toFixed(1).toLocaleString() : ''} บาท
                         </span>{" "}
-                        <span className="text-nowrap">Since yesterday</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -101,9 +107,9 @@ class AccountHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Performance
+                            บัญชีที่ใช้งาน
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">49,65%</span>
+                          <span className="h2 font-weight-bold mb-0">{this.props.active}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -112,10 +118,10 @@ class AccountHeader extends Component{
                         </Col>
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-success mr-2">
-                          <i className="fas fa-arrow-up" /> 12%
+                        <span className="text-warning mr-2">
+                          {this.props.suspend}
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">บัญชี ถูกระงับ</span>
                       </p>
                     </CardBody>
                   </Card>

@@ -3,7 +3,6 @@ import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
 class BranchHeader extends Component{
   render () {
-    const {totalnum} = this.props
     return (
       <>
         <div className="header bg-gradient-info pb-8 pt-5 pt-md-8" style={{zIndex:-1}}>
@@ -23,7 +22,31 @@ class BranchHeader extends Component{
                             จำนวนสาขา
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            {totalnum}
+                            {this.props.branch_count ? this.props.branch_count : ''}
+                          </span>
+                        </div>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
+                            <i className="fas fa-chart-bar" />
+                          </div>
+                        </Col>
+                      </Row> 
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col lg="6" xl="3">
+                  <Card className="card-stats mb-4 mb-xl-0">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            สาขาที่มีการโอนเงินมากที่สุด
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            {this.props.transfer_branch ? this.props.transfer_branch : 'ออนไลน์'}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -34,9 +57,9 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3 สาขา
+                            {this.props.transfer_amount ? this.props.transfer_amount : 'ออนไลน์'}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">บาท</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -50,10 +73,11 @@ class BranchHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            สาขาที่มีการถอนเงินมากที่สุด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                            
+                          {this.props.withdraw_branch ? this.props.withdraw_branch : 'ออนไลน์'}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -64,9 +88,9 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          {this.props.withdraw_amount ? this.props.withdraw_amount : 'ออนไลน์'}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">บาท</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -80,10 +104,10 @@ class BranchHeader extends Component{
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            จำนวนสาขา
+                            สาขาที่มีการฝากเงินมากที่สุด
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            32
+                          {this.props.deposit_branch ? this.props.deposit_branch : 'ออนไลน์'}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -94,39 +118,9 @@ class BranchHeader extends Component{
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          {this.props.deposit_amount ? this.props.deposit_amount : 'ออนไลน์'}
                         </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
-                      </p>
-                    </CardBody>
-                  </Card>
-                </Col>
-                <Col lg="6" xl="3">
-                  <Card className="card-stats mb-4 mb-xl-0">
-                    <CardBody>
-                      <Row>
-                        <div className="col">
-                          <CardTitle
-                            tag="h5"
-                            className="text-uppercase text-muted mb-0"
-                          >
-                            จำนวนสาขา
-                          </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">
-                            32
-                          </span>
-                        </div>
-                        <Col className="col-auto">
-                          <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                            <i className="fas fa-chart-bar" />
-                          </div>
-                        </Col>
-                      </Row>
-                      <p className="mt-3 mb-0 text-muted text-sm">
-                        <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
-                        </span>{" "}
-                        <span className="text-nowrap">จากเดือนที่เเล้ว</span>
+                        <span className="text-nowrap">บาท</span>
                       </p>
                     </CardBody>
                   </Card>

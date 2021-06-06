@@ -8,13 +8,22 @@ class Branch extends Component{
   constructor(props) {
     super(props)
     this.state = {
-      branch_list : []
+      branch_list : [],
+      all_data : null
     }
   }
   componentDidMount () {
     axios.post('/cms/branch/info').then(res=>{
+      console.log(res)
       this.setState({
-        branch_list : res.data
+        branch_list : res.data.branch_list,
+        branch_count : res.data.branch_count[0].count,
+        transfer_branch : res.data.transfer[0].branch_name,
+        transfer_amount : res.data.transfer[0].sum,
+        deposit_branch : res.data.deposit[0].branch_name,
+        deposit_amount : res.data.deposit[0].sum,
+        withdraw_branch : res.data.withdraw[0].branch_name,
+        withdraw_amount : res.data.withdraw[0].sum,
       })
     })
   }
@@ -22,7 +31,15 @@ class Branch extends Component{
     const {branch_list} = this.state
     return (
       <>
-        <BranchHeader totalnum={branch_list.length}/>
+        <BranchHeader all_data={this.state.all_data}
+        transfer_branch={this.state.transfer_branch}
+        transfer_amount={this.state.transfer_amount}
+        deposit_branch ={this.state.deposit_branch}
+        deposit_amount ={this.state.deposit_amount}
+        withdraw_branch={this.state.withdraw_branch}
+        withdraw_amount={this.state.withdraw_amount}
+        branch_count={this.state.branch_count}
+        />
         {/* Page content */}
         {/* <Container className="mt--7" fluid> */}
         <BranchTable branch_list={branch_list} />

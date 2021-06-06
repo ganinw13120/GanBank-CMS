@@ -92,6 +92,7 @@ class Transfer extends Component{
           data.bank_list = null
           data.dest_no = data.dest_no.replace(/-/g, '').trim()
           data.origin_no = data.origin_no.replace(/-/g, '').trim()
+          data.token = localStorage.getItem('token')
           console.log(data)
           axios.post('/cms/transaction/transfer', data).then(res=>{
               Swal.fire({

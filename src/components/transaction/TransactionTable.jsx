@@ -38,7 +38,7 @@ class TransactionTable extends Component{
     const {classes, transaction_list} = this.props
     rows = [];
     if(transaction_list) transaction_list.forEach((e, index)=>{
-      rows.push(createData(e.ID, e.Typename, e.Amount, e.TimeStamp))
+      rows.push(createData(e.transaction_id, e.transaction_type_name, e.transaction_amount, e.transaction_timestamp))
     })
     return (
       <>

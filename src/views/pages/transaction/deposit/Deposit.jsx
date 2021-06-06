@@ -80,6 +80,7 @@ class Deposit extends Component{
           Swal.fire('กำลังทำรายการ..')
           const data = this.state
           data.account_no = data.account_no.replace(/-/g, '').trim()
+          data.token = localStorage.getItem('token')
           console.log(data)
           axios.post('/cms/transaction/create', data).then(res=>{
               Swal.fire({
@@ -88,6 +89,13 @@ class Deposit extends Component{
                   confirmButtonText:
                     '<a href="/cms/transaction" style="text-decoration: none;color:white;">กลับไปหน้าหลัก</a>',
                 })
+          })
+          .catch(function (error) {
+            Swal.fire({
+                title: 'ไม่สำเร็จ!',
+                icon: 'error',
+                html: error.response.data.message,
+              })
           })
       }
     })
