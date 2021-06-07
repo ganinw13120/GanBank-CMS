@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
+import welcome from "../assets/img/brand/welcome-img.png";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
@@ -46,30 +47,17 @@ const Index = (props) => {
   };
   return (
     <>
-      <Header />
-      {/* Page content */}
-      <Container className="mt--7" fluid style={{letterSpacing:3}}>
-                <Row>
-                    <Col>
-                    <h1 className="display-2 text-white text-bold" >ยืนดีต้อนรับสู่ Gan Banking</h1>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                    <h2 className="mt-6" >ขอขอบคุณที่ให้ความไว้วางใจกับเรา Gan Banking</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                    <h2 className=" " >ขอขอบคุณทุกท่านที่ทำงานกันอย่างเต็มที่</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                    <h2 className=" " >สิ้นปีนี้มีโบนัส</h2>
-                    </Col>
-                </Row>
-      </Container>
+    <Container style={{backgroundColor:'white', marginTop:0, height:1000, width:'100%'}}>
+    {/* <Container style={{backgroundColor:'#b08ec1', height:1000, width:'100%'}}> */}
+      <Row>
+        <Col md='6'className='text-center justify-content-center' style={{marginTop:'5%'}}>
+          <img src='https://www.kasikornbank.com/SiteCollectionDocuments/splash/img/queen-birthday2021/queen-shadow.png' style={{width:'90%',maxWidth: 484}}/>
+        </Col>
+        <Col  md='5' className='text-center justify-content-center' style={{marginTop:'15%'}}> 
+          <img src={welcome} style={{width:'100%'}}/>
+        </Col>
+      </Row>
+    </Container>
     </>
   );
 };
