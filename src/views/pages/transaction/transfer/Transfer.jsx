@@ -43,7 +43,7 @@ function AccountNumberMask(props) {
         ref={(ref) => {
           inputRef(ref ? ref.inputElement : null);
         }}
-        mask={[ /[0-9]/, '-', /\d/, /\d/, /\d/,'-', /\d/, /\d/, /\d/, /\d/, '-',/\d/, /\d/,/\d/,/\d/]}
+        mask={[ /[0-9]/,/\d/, /\d/, '-',  /\d/,'-', /\d/, /\d/, /\d/, /\d/, '-',/\d/]}
         placeholderChar={'\u2000'}
         showMask
       />

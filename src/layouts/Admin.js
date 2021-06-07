@@ -37,7 +37,7 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/cms") {
+      if (prop.layout === "/cms" && (prop.role==='all'||prop.role===localStorage.getItem("level")||localStorage.getItem("level")==='manager')) {
         return (
           <Route exact 
             path={prop.layout + prop.path}

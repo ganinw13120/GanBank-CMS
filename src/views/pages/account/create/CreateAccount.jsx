@@ -94,6 +94,7 @@ class CreateAccount extends Component{
             branch_selected : temp.branch_selected,
             account_type_selected : temp.account_type_selected,
             info : temp.info,
+            token : localStorage.getItem('token')
           }
           console.log(data)
           axios.post('/cms/account/create', data).then(res=>{
@@ -136,7 +137,7 @@ class CreateAccount extends Component{
       if(val==null||val=='') return false;
       return true;
     }
-    let submitable = isFill(this.state.account_name) && isFill(account_type_selected) && isFill(branch_selected)
+    let submitable = isFill(this.state.account_name) && isFill(account_type_selected)
     if(submitable) {
       this.state.info.forEach(e=>{
         submitable = !(
@@ -183,7 +184,7 @@ class CreateAccount extends Component{
                 </Col>
                 <Col md='8'>
                   <Row>
-                    <Col className=''>
+                    {/* <Col className=''>
                       <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label">สาขา</InputLabel>
                         <Select
@@ -198,7 +199,7 @@ class CreateAccount extends Component{
                           {branch_render}
                         </Select>
                       </FormControl>
-                    </Col>
+                    </Col> */}
                     <Col className=''>
                       <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label">ประเภท</InputLabel>

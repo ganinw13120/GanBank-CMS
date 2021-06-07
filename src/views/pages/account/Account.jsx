@@ -19,15 +19,17 @@ class Account extends Component{
     }
   }
   componentDidMount () {
-    axios.post('/cms/account/info').then(res=>{
+    let data = {}
+    data.token = localStorage.getItem('token')
+    axios.post('/cms/account/info',data).then(res=>{
       console.log(res)
       this.setState({
         account_list : res.data.account_list,
-        count : res.data.account_count[0].count,
-        count_this_month : res.data.account_count_this_month[0].count,
-        active : res.data.active[0].count,
-        suspend : res.data.suspend[0].count,
-        most_type : res.data.most_account_type[0],
+        count : res.data.account_count[0] ? res.data.account_count[0].count : 0,
+        count_this_month : res.data.account_count_this_month[0]? res.data.account_count_this_month[0].count : 0,
+        active : res.data.active[0] ? res.data.active[0].count : 0,
+        suspend : res.data.suspend[0] ? res.data.suspend[0].count : 0,
+        most_type : res.data.most_account_type[0] ? res.data.most_account_type[0] : 0,
         deposit :res.data.deposit[0]
       })
     })

@@ -70,7 +70,7 @@ const Sidebar = (props) => {
   };
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
-    return routes.map((prop, key) => { if(!prop.hide)
+    return routes.map((prop, key) => { if(!prop.hide  && (prop.role==='all'||prop.role===localStorage.getItem("level")||localStorage.getItem("level")==='manager'))
       return (
         <NavItem key={key}>
           <NavLink

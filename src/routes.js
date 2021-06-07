@@ -16,10 +16,11 @@ import Logout from 'views/pages/logout'
 var routes = [
   {
     path: "/index",
-    name: "ภาพรวม",
+    name: "หน้าแรก",
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/cms",
+    role : 'all',
   },
   {
     path: "/account",
@@ -27,6 +28,7 @@ var routes = [
     icon: "ni ni-folder-17 text-blue",
     component: Account,
     layout: "/cms",
+    role : 'staff',
   },
   {
     path: "/branch",
@@ -34,6 +36,7 @@ var routes = [
     icon: "ni ni-shop text-info",
     component: Branch,
     layout: "/cms",
+    role : 'administrator',
   },
   {
     path: "/employee",
@@ -41,6 +44,7 @@ var routes = [
     icon: "ni ni-single-02 text-red",
     component: Employee,
     layout: "/cms",
+    role : 'administrator',
   },
   {
     path: "/transaction",
@@ -48,6 +52,7 @@ var routes = [
     icon: "ni ni-single-copy-04 text-yellow",
     component: Transaction,
     layout: "/cms",
+    role : 'staff',
   },
   {
     path: "/loan",
@@ -55,6 +60,7 @@ var routes = [
     icon: "ni ni-archive-2 text-warning",
     component: Loan,
     layout: "/cms",
+    role : 'staff',
   },
   {
     path: "/promotion",
@@ -62,6 +68,7 @@ var routes = [
     icon: "ni ni-mobile-button text-blue",
     component: Promotion,
     layout: "/cms",
+    role : 'administrator',
   },
   {
     path: "/customer",
@@ -69,6 +76,7 @@ var routes = [
     icon: "ni ni-circle-08 text-primary",
     component: Customer,
     layout: "/cms",
+    role : 'staff',
   },
   {
     path: "/logout",
@@ -76,6 +84,7 @@ var routes = [
     icon: "ni ni-button-power text-red",
     component: Logout,
     layout: "/cms",
+    role : 'all',
   },
   // {
   //   path: "/icons",

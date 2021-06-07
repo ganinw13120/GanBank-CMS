@@ -17,13 +17,13 @@ class Branch extends Component{
       console.log(res)
       this.setState({
         branch_list : res.data.branch_list,
-        branch_count : res.data.branch_count[0].count,
-        transfer_branch : res.data.transfer[0].branch_name,
-        transfer_amount : res.data.transfer[0].sum,
-        deposit_branch : res.data.deposit[0].branch_name,
-        deposit_amount : res.data.deposit[0].sum,
-        withdraw_branch : res.data.withdraw[0].branch_name,
-        withdraw_amount : res.data.withdraw[0].sum,
+        branch_count :  res.data.branch_count[0] ? res.data.branch_count[0].count : 0,
+        transfer_branch : res.data.transfer[0]  ? res.data.transfer[0].branch_name : 0,
+        transfer_amount : res.data.transfer[0] ? res.data.transfer[0].sum : 0,
+        deposit_branch : res.data.deposit[0] ? res.data.deposit[0].branch_name : 0,
+        deposit_amount : res.data.deposit[0] ? res.data.deposit[0].sum : 0,
+        withdraw_branch : res.data.withdraw[0] ?res.data.withdraw[0].branch_name : 0,
+        withdraw_amount : res.data.withdraw[0] ?res.data.withdraw[0].sum : 0,
       })
     })
   }
