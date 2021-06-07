@@ -88,7 +88,6 @@ class EditAccount extends Component{
           const { match: { params } } = this.props;
           const data = {
             account_name : temp.account_name,
-            branch_selected : temp.branch_selected,
             account_type_selected : temp.account_type_selected,
             account_no : params.id
           }
@@ -135,7 +134,7 @@ class EditAccount extends Component{
         <Container className="d-flex align-items-center" fluid>
             <Row>
                 <Col>
-                  <h1 className="display-2 text-white text-bold" >แบบฟอร์มการแก้ไขธนาคาร</h1>
+                  <h1 className="display-2 text-white text-bold" >แบบฟอร์มการแก้ไขบัญชีธนาคาร</h1>
                 </Col>
             </Row>
             </Container>
@@ -150,22 +149,6 @@ class EditAccount extends Component{
                 </Col>
                 <Col md='8'>
                   <Row>
-                    <Col className=''>
-                      <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-outlined-label">สาขา</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-outlined-label"
-                          id="demo-simple-select-outlined"
-                          value={branch_selected}
-                          label="สาขา"
-                          onChange={(e)=>{
-                            this.onChangeData('branch_selected', e.target.value)
-                          }}
-                        >
-                          {branch_render}
-                        </Select>
-                      </FormControl>
-                    </Col>
                     <Col className=''>
                       <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel id="demo-simple-select-outlined-label">ประเภท</InputLabel>
@@ -194,15 +177,6 @@ class EditAccount extends Component{
                       }}
                     />
                   </Row>
-                </Col>
-            </Row>
-        </Container>
-        <Container className="d-flex align-items-center pt-2"  style={{marginLeft:'0%',marginTop:40, borderTop:'1px solid #DADADA'}} fluid>
-            <Row>
-                <Col className='pr-8'>
-                  <Container>
-                  <h1 className="display-6 pt-3" >ข้อมูลผู้เปิดบัญชี</h1>
-                  </Container>
                 </Col>
             </Row>
         </Container>
