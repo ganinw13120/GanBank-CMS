@@ -126,7 +126,7 @@ class EditAccount extends Component{
       if(val==null||val=='') return false;
       return true;
     }
-    let submitable = isFill(this.state.account_name) && isFill(account_type_selected) && isFill(branch_selected)
+    let submitable = isFill(this.state.account_name) && isFill(account_type_selected)
     return (
       <>
         <div className="header bg-gradient-info pb-3 pt-5 pt-md-8" style={{zIndex:-1}}>
