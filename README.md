@@ -1,3 +1,4 @@
 # Database Project Gan Banking CMS
 
-**Develop by Gan Mongklakorn**
+**Develop by group of student from KMUTT.
+For study purpose.
