@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { Container} from "reactstrap";
 
 class PromotionHeader extends Component{
   render () {

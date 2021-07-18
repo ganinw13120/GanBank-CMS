@@ -118,7 +118,7 @@ class PersonInfo extends Component {
                     <Col style={{marginLeft:'-50%'}}>
                     <Radio
                         classes={{root: classes.radio, checked: classes.checked}}
-                        checked={gender=='male'}
+                        checked={gender==='male'}
                         onChange={(e)=>{
                           this.onChangeData('gender', e.target.value)
                         }}
@@ -130,7 +130,7 @@ class PersonInfo extends Component {
                     <Radio
                         classes={{root: classes.radio, checked: classes.checked}}
                         style={{marginLeft:'10%'}}
-                        checked={gender=='female'}
+                        checked={gender==='female'}
                         onChange={(e)=>{
                           this.onChangeData('gender', e.target.value)
                         }}
@@ -146,7 +146,7 @@ class PersonInfo extends Component {
                     <Col style={{marginLeft:'-50%'}}>
                     <Radio
                         classes={{root: classes.radio, checked: classes.checked}}
-                        checked={prefix=='นาย'}
+                        checked={prefix==='นาย'}
                         onChange={(e)=>{
                           this.onChangeData('prefix', e.target.value)
                         }}
@@ -158,7 +158,7 @@ class PersonInfo extends Component {
                     <Radio
                         classes={{root: classes.radio, checked: classes.checked}}
                         style={{marginLeft:'10%'}}
-                        checked={prefix=='นาง'}
+                        checked={prefix==='นาง'}
                         onChange={(e)=>{
                           this.onChangeData('prefix', e.target.value)
                         }}
@@ -170,7 +170,7 @@ class PersonInfo extends Component {
                     <Radio
                         classes={{root: classes.radio, checked: classes.checked}}
                         style={{marginLeft:'10%'}}
-                        checked={prefix=='นางสาว'}
+                        checked={prefix==='นางสาว'}
                         onChange={(e)=>{
                           this.onChangeData('prefix', e.target.value)
                         }}
@@ -415,7 +415,7 @@ class Address extends Component {
         const {district_list} = this.state
         let postCode = ''
         district_list.forEach(item=>{
-            if(item.district_id==e.target.value) postCode=item.district_postcode
+            if(item.district_id===e.target.value) postCode=item.district_postcode
         })
         this.setState({
             district : e.target.value,
@@ -491,7 +491,7 @@ class Address extends Component {
                             value={amphur}
                             label="เขต / อำเภอ"
                             onChange={this.onChangeAmphur}
-                            disabled={amphur_list.lenght==0}
+                            disabled={amphur_list.lenght===0}
                             >
                             {amphur_render}
                             </Select>
@@ -506,7 +506,7 @@ class Address extends Component {
                             value={district}
                             label="เเขวง / ตำบล"
                             onChange={this.onChangeDistrict}
-                            disabled={district_list.lenght==0}
+                            disabled={district_list.lenght===0}
                             >
                             {district_render}
                             </Select>

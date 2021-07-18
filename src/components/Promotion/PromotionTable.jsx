@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 class PromotionTable extends Component{
   action = (val, id) =>{
-    if(val=='delete') {
+    if(val==='delete') {
       
       Swal.fire({
         title: 'ยืนยันการลบโปรโมชั่น',

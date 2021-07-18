@@ -1,17 +1,10 @@
-FROM node:13.12.0-alpine
-
-# set working directory
-WORKDIR /app
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# install app dependencies
-COPY package.json ./
-RUN npm install
-
-# add app
-COPY . ./
-
-# start app
-CMD ["npm", "start"]  
+FROM node:16-alpine
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app/
+RUN npm install --force
+COPY . /usr/src/app
+EXPOSE 3000
+RUN npm run-script build
+RUN npm install -g serve
+CMD ["serve","-s","build"]

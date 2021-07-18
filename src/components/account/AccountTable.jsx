@@ -37,7 +37,7 @@ const styles = theme => ({
 });
 class AccountTable extends Component{
   action = (val, id) =>{
-    if(val=='delete') {
+    if(val==='delete') {
       
       Swal.fire({
         title: 'ยีนยันการระงับบัญชี',
