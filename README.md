@@ -1,4 +1,5 @@
-# Database Project Gan Banking CMS
+# Content Management System for Gan Bank
 
-**Develop by group of student from KMUTT.
-For study purpose.
+Develop by group of student from KMUTT,for study purpose.
+
+Submitting for term project.
